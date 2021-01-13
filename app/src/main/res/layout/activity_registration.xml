@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RegistrationActivity"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textMessagesRegistration"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/badPasswordRegPlease" />
+
+    <EditText
+        android:id="@+id/editTextEmailRegistration"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        android:hint="@string/emailHintReg"
+        tools:ignore="Autofill,LabelFor" />
+
+    <EditText
+        android:id="@+id/editTextPasswordRegistration"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPassword"
+        tools:ignore="Autofill,LabelFor"
+        android:hint="@string/passwordHintReg"/>
+
+    <EditText
+        android:id="@+id/editTextPasswordRepeatRegistration"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPassword"
+        tools:ignore="Autofill,LabelFor"
+        android:hint="@string/passwordHintRepeatReg"/>
+
+    <Button
+        android:id="@+id/buttonRegister"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/buttonRegisterNewAccount"
+        android:onClick="onClickBtnRegister"/>
+
+</LinearLayout>
