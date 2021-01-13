@@ -1,14 +1,13 @@
 package ru.pyply.games.landgrab;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends Activity {
     public static String email = "max@mail.ru";
     public static String password = "qwerty123";
 
@@ -39,8 +38,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
         switch (requestCode) {
             case REQ_REGISTRATION_CODE:
                 switch (resultCode) {
