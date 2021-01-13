@@ -55,10 +55,6 @@ public class RegistrationActivity extends AppCompatActivity {
         } else { // При успехе возвращаемся на страницу входа
             Intent i = new Intent();
             i.putExtra(EXTRA_EMAIL_RES, email);
-
-            // TODO: Избавится после от отправки пароля в активность
-            i.putExtra(EXTRA_PASSWORD_RES, password);
-
             setResult(RESULT_OK, i);
             finish();
         }

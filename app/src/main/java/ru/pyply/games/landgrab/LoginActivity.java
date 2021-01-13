@@ -29,9 +29,10 @@ public class LoginActivity extends AppCompatActivity {
         String input_password = text_edit_password.getText().toString();
 
         if (input_email.equals(email) && password.equals(input_password)) {
+            // При успешном входе мы говорим об успехе
             text_view_msg.setText(R.string.success_login_msg);
         } else {
-            System.out.printf("%s != %s | %s != %s\n", input_email, email, input_password, password);
+            // Иначе отправляем на регистрацию
             Intent i = new Intent(LoginActivity.this, RegistrationActivity.class);
             startActivityForResult(i, REQ_REGISTRATION_CODE);
         }
@@ -50,10 +51,6 @@ public class LoginActivity extends AppCompatActivity {
                         // Устанавливаем сразу зареганную почту и очищаем пароль
                         text_edit_email.setText(data.getStringExtra(RegistrationActivity.EXTRA_EMAIL_RES));
                         text_edit_password.setText("");
-
-                        // TODO: После убрать эти 2 ненужные вещи
-                        email = data.getStringExtra(RegistrationActivity.EXTRA_EMAIL_RES);
-                        password = data.getStringExtra(RegistrationActivity.EXTRA_PASSWORD_RES);
                         break;
                 }
         }
