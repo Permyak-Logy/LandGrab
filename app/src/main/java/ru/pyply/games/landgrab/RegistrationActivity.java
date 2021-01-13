@@ -7,11 +7,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 public class RegistrationActivity extends Activity {
     public static final String EXTRA_EMAIL_RES = "ru.pyply.games.landgrab.EXTRA_EMAIL_RES";
-    public static final String EXTRA_PASSWORD_RES = "ru.pyply.games.landgrab.EXTRA_PASSWORD_RES";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
