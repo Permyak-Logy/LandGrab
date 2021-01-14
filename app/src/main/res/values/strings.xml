@@ -1,17 +1,17 @@
 <resources>
     <string name="app_name">LandGrab</string>
-    <string name="buttonLogin">Войти</string>
+    <string name="buttonLogin">Вход</string>
     <string name="pleaseLogin">Выполните пж вход</string>
     <string name="inputEmail">Введите почту</string>
-    <string name="inputPassword">Введите Пароль</string>
-    <string name="success_login_msg">Успешный вход!</string>
+    <string name="inputPassword">Введите пароль</string>
+    <string name="success_login_msg">Верно</string>
     <string name="passwordHintReg">Пароль</string>
     <string name="emailHintReg">Почта</string>
     <string name="passwordHintRepeatReg">Повторите пароль</string>
     <string name="badPasswordRegPlease">Неверный Пароль! Зарегистрируйтесь пж</string>
     <string name="buttonRegisterNewAccount">Зарегистрироваться</string>
     <string name="email_is_empty">Поле почты пустое!</string>
-    <string name="paswords_is_not_equals">Пароли не совпадают</string>
     <string name="passwords_is_empty">Пароли не указаны</string>
     <string name="passwords_is_not_equals">Пароли не совпадают</string>
+    <string name="fail_login_msg">Вы ошиблись в логине или пароле</string>
 </resources>
