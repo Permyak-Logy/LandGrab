@@ -1,6 +1,7 @@
 package ru.pyply.games.landgrab;
 
 import android.accessibilityservice.GestureDescription;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -8,6 +9,7 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -26,19 +28,22 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         @Override
         public boolean onDown(MotionEvent e) {
+            System.out.println("onDown");
             return false;
         }
 
         @Override
         public void onShowPress(MotionEvent e) {
-
+            System.out.println("onShowPress");
         }
 
         @Override
         public boolean onSingleTapUp(MotionEvent e) {
+            System.out.println("onSingleTapUp");
             return false;
         }
 
+        // TODO: Что то не так с этим методом... Не робит
         @Override
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
             System.out.println("onScroll");
@@ -49,11 +54,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         @Override
         public void onLongPress(MotionEvent e) {
-
+            System.out.println("onLongPress");
         }
 
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            System.out.println("onFling");
             return false;
         }
     }
@@ -142,25 +148,27 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public GameView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         getHolder().addCallback(this);
-        gestures = new GestureDetector(getContext(), new GestureListener(this));
     }
 
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
         getHolder().addCallback(this);
-        gestures = new GestureDetector(getContext(), new GestureListener(this));
     }
 
     public GameView(Context context) {
         super(context);
         getHolder().addCallback(this);
-        gestures = new GestureDetector(getContext(), new GestureListener(this));
+
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
+        gestures = new GestureDetector(getContext(), new GestureListener(this));
+
         drawThread = new DrawThread(getContext(), getHolder());
         drawThread.start();
+
+
     }
 
     @Override
@@ -184,7 +192,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        System.out.println("onTouchEvent");
+        super.onTouchEvent(event);
+
         return gestures.onTouchEvent(event);
     }
 }
