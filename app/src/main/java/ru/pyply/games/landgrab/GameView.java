@@ -1,7 +1,5 @@
 package ru.pyply.games.landgrab;
 
-import android.accessibilityservice.GestureDescription;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -16,51 +14,48 @@ import android.view.SurfaceView;
 import androidx.annotation.NonNull;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
-    private GestureDetector gestures;
+    private GestureDetector gesturesOnScroll;
+    private ScaleGestureDetector gesturesOnScale;
+
     public DrawThread drawThread;
 
-    private static class GestureListener implements GestureDetector.OnGestureListener {
+
+    private static class GestureListenerOnScale extends ScaleGestureDetector.SimpleOnScaleGestureListener {
         GameView view;
 
-        public GestureListener(GameView view) {
+        public GestureListenerOnScale(GameView view) {
+            super();
             this.view = view;
         }
 
         @Override
-        public boolean onDown(MotionEvent e) {
-            System.out.println("onDown");
-            return false;
+        public boolean onScale(ScaleGestureDetector detector) {
+            super.onScale(detector);
+
+            System.out.println("onScale");
+            DrawThread dt = view.getDrawThread();
+            dt.zoom *= detector.getScaleFactor();
+            dt.zoom = Math.max(0.1f, Math.min(dt.zoom, 5.0f));
+            return true;
+        }
+    }
+
+    private static class GestureListenerOnScroll extends GestureDetector.SimpleOnGestureListener {
+        GameView view;
+
+        public GestureListenerOnScroll(GameView view) {
+            super();
+            this.view = view;
         }
 
-        @Override
-        public void onShowPress(MotionEvent e) {
-            System.out.println("onShowPress");
-        }
-
-        @Override
-        public boolean onSingleTapUp(MotionEvent e) {
-            System.out.println("onSingleTapUp");
-            return false;
-        }
-
-        // TODO: Что то не так с этим методом... Не робит
         @Override
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
             System.out.println("onScroll");
-            view.drawThread.camera_x += distanceX;
-            view.drawThread.camera_y += distanceY;
-            return false;
-        }
-
-        @Override
-        public void onLongPress(MotionEvent e) {
-            System.out.println("onLongPress");
-        }
-
-        @Override
-        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-            System.out.println("onFling");
-            return false;
+            DrawThread dt = view.getDrawThread();
+            dt.camera_x -= distanceX / dt.zoom;
+            dt.camera_y -= distanceY / dt.zoom;
+            // System.out.println(dt.camera_x + " " + dt.camera_y);
+            return true;
         }
     }
 
@@ -109,7 +104,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                         drawSheet(canvas);
                         drawPoints(canvas);
 
-                        Thread.sleep(1000);
+                        Thread.sleep(1);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     } finally {
@@ -125,17 +120,17 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         public void drawSheet(Canvas canvas) {
             // Определим сдвиг линий по умолчанию
-            int shift_x = (int) (camera_x % width_between_lines);
-            int shift_y = (int) (camera_y % width_between_lines);
+            int shift_x = (int) (this.camera_x % (width_between_lines * zoom));
+            int shift_y = (int) (this.camera_y % (width_between_lines * zoom));
 
             // Рисуем сетку
-            for (int i = 0; i * width_between_lines < canvas.getWidth(); i++) {
-                int x = shift_x + i * width_between_lines;
+            for (int i = 0; i * width_between_lines * zoom < canvas.getWidth(); i++) {
+                int x = (int) (shift_x + i * width_between_lines * zoom);
                 canvas.drawLine(x, 0, x, canvas.getHeight(), default_sheet_lines);
             }
 
-            for (int i = 0; i * width_between_lines < canvas.getHeight(); i++) {
-                int y = shift_y + i * width_between_lines;
+            for (int i = 0; i * width_between_lines * zoom < canvas.getHeight(); i++) {
+                int y = (int) (shift_y + i * width_between_lines * zoom);
                 canvas.drawLine(0, y, canvas.getWidth(), y, default_sheet_points);
             }
         }
@@ -161,9 +156,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     }
 
+    public DrawThread getDrawThread() {
+        return this.drawThread;
+    }
+
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        gestures = new GestureDetector(getContext(), new GestureListener(this));
+        gesturesOnScroll = new GestureDetector(getContext(), new GestureListenerOnScroll(this));
+        gesturesOnScale = new ScaleGestureDetector(getContext(), new GestureListenerOnScale(this));
 
         drawThread = new DrawThread(getContext(), getHolder());
         drawThread.start();
@@ -193,7 +193,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         super.onTouchEvent(event);
-
-        return gestures.onTouchEvent(event);
+        gesturesOnScroll.onTouchEvent(event);
+        gesturesOnScale.onTouchEvent(event);
+        return true;
     }
 }
