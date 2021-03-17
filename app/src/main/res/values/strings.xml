@@ -11,4 +11,13 @@
     <string name="players">Игроки</string>
     <string name="minus">-</string>
     <string name="player_name">Имя игрока</string>
+    <string name="count_players">Кол-во игроков</string>
+    <string name="sec">сек.</string>
+    <string name="width">Ширина</string>
+    <string name="height">Высота</string>
+    <string name="target_game">Цель игры</string>
+    <string name="max_square">Наибольшая площадь</string>
+    <string name="max_count_captive">Наибольшее кол-во пленных</string>
+    <string name="save">Сохранить</string>
+    <string name="cancel">Отмена</string>
 </resources>

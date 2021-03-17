@@ -20,7 +20,7 @@ public class PlayOfflineActivity extends AppCompatActivity {
     }
 
     public void showSettingsOffline(View view) {
-        Intent i = new Intent(PlayOfflineActivity.this, SettingsGame.class);
+        Intent i = new Intent(PlayOfflineActivity.this, SettingsGameActivity.class);
         startActivityForResult(i, 0);
     }
 }

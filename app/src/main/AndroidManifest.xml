@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LandGrab">
         <activity android:name=".LobbyActivity" />
-        <activity android:name=".SettingsGame" />
+        <activity android:name=".SettingsGameActivity" />
         <activity android:name=".PlayOfflineActivity" />
         <activity android:name=".PlayOnlineActivity" />
         <activity android:name=".AccountActivity" />
