@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ru.pyply.games.landgrab">
+    package="ru.pyply.games.points">
 
     <application
         android:allowBackup="true"
@@ -9,13 +9,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.LandGrab">
-        <activity android:name=".LobbyActivity" />
-        <activity android:name=".SettingsGameActivity" />
-        <activity android:name=".PlayOfflineActivity" />
-        <activity android:name=".PlayOnlineActivity" />
-        <activity android:name=".AccountActivity" />
-        <activity android:name=".GameActivity" /><!-- TODO: Убрать Title Bar -->
-        <activity android:name=".MainActivity">
+        <activity android:name="ru.pyply.games.points.LobbyActivity" />
+        <activity android:name="ru.pyply.games.points.SettingsGameActivity" />
+        <activity android:name="ru.pyply.games.points.PlayOfflineActivity" />
+        <activity android:name="ru.pyply.games.points.PlayOnlineActivity" />
+        <activity android:name="ru.pyply.games.points.AccountActivity" />
+        <activity android:name="ru.pyply.games.points.GameActivity" /><!-- TODO: Убрать Title Bar -->
+        <activity android:name="ru.pyply.games.points.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

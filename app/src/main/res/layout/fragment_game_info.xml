@@ -23,7 +23,7 @@
 
     <fragment
         android:id="@+id/fragment3"
-        android:name="ru.pyply.games.landgrab.CurrentPlayerFragment"
+        android:name="ru.pyply.games.points.CurrentPlayerFragment"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_weight="3"
@@ -31,7 +31,7 @@
 
     <fragment
         android:id="@+id/fragment2"
-        android:name="ru.pyply.games.landgrab.TimerFragment"
+        android:name="ru.pyply.games.points.TimerFragment"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_weight="1"

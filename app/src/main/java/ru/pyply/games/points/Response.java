@@ -1,6 +1,4 @@
-package ru.pyply.games.landgrab;
-
-import java.util.Dictionary;
+package ru.pyply.games.points;
 
 public class Response {
     protected long id;

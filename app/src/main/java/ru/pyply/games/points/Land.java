@@ -1,4 +1,4 @@
-package ru.pyply.games.landgrab;
+package ru.pyply.games.points;
 
 public class Land {
     protected long id;
