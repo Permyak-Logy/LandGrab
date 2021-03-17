@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
+    android:gravity="center"
     tools:context=".TimerFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -13,7 +14,7 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="9"
-        android:gravity="center|right"
+        android:gravity="center"
         android:text="00:00" />
 
     <ImageView

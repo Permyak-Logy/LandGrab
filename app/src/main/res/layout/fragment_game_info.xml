@@ -10,16 +10,24 @@
 
     <Button
         android:id="@+id/button"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_weight="3"
+        android:layout_weight="1"
         android:text="@string/exit_in_game"
         app:backgroundTint="@color/teal_700" />
 
     <Space
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="8" />
+        android:layout_weight="40" />
+
+    <fragment
+        android:id="@+id/fragment3"
+        android:name="ru.pyply.games.landgrab.CurrentPlayerFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        tools:layout="@layout/fragment_current_player" />
 
     <fragment
         android:id="@+id/fragment2"

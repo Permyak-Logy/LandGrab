@@ -9,11 +9,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.LandGrab">
-        <activity android:name=".GameActivity"></activity>
+        <activity android:name=".LobbyActivity" />
+        <activity android:name=".AccountActivity" />
+        <activity android:name=".SettingsGame" />
+        <activity android:name=".PlayOnlineActivity" />
+        <activity android:name=".GameActivity" /><!-- TODO: Убрать Title Bar -->
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
