@@ -6,4 +6,9 @@
     <string name="play_offline">Играть локально</string>
     <string name="play_online">Играть по сети</string>
     <string name="account">Аккаунт</string>
+    <string name="start">Начать</string>
+    <string name="settings">Настройки</string>
+    <string name="players">Игроки</string>
+    <string name="minus">-</string>
+    <string name="player_name">Имя игрока</string>
 </resources>
