@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -11,7 +12,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Intent i = new Intent(MainActivity.this, GameActivity.class);
+    }
+
+    public void playOffline(View view) {
+        Intent i = new Intent(MainActivity.this, PlayOfflineActivity.class);
+        startActivity(i);
+    }
+
+    public void playOnline(View view) {
+        Intent i = new Intent(MainActivity.this, PlayOnlineActivity.class);
+        startActivity(i);
+    }
+
+    public void showAccount(View view) {
+        Intent i = new Intent(MainActivity.this, AccountActivity.class);
         startActivity(i);
     }
 }
