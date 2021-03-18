@@ -1,4 +1,4 @@
-package ru.pyply.games.points;
+package ru.pyply.games.points.models;
 
 import android.graphics.Color;
 import android.media.Image;

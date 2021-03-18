@@ -1,8 +1,10 @@
-package ru.pyply.games.points;
+package ru.pyply.games.points.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import ru.pyply.games.points.R;
 
 public class GameActivity extends AppCompatActivity {
 

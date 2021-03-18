@@ -6,16 +6,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".GameActivity">
+    tools:context=".activities.GameActivity">
 
     <fragment
         android:id="@+id/fragment"
-        android:name="ru.pyply.games.points.GameInfoFragment"
+        android:name="ru.pyply.games.points.fragments.GameInfoFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:layout="@layout/fragment_game_info" />
 
-    <ru.pyply.games.points.GameView
+    <ru.pyply.games.points.views.GameView
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

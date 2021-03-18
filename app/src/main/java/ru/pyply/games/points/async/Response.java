@@ -1,4 +1,4 @@
-package ru.pyply.games.points;
+package ru.pyply.games.points.async;
 
 public class Response {
     protected long id;

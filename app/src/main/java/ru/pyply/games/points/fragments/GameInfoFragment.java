@@ -1,4 +1,4 @@
-package ru.pyply.games.points;
+package ru.pyply.games.points.fragments;
 
 import android.os.Bundle;
 
@@ -8,12 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import ru.pyply.games.points.R;
+
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link CurrentPlayerFragment#newInstance} factory method to
+ * Use the {@link GameInfoFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CurrentPlayerFragment extends Fragment {
+public class GameInfoFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -24,7 +26,7 @@ public class CurrentPlayerFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public CurrentPlayerFragment() {
+    public GameInfoFragment() {
         // Required empty public constructor
     }
 
@@ -34,11 +36,11 @@ public class CurrentPlayerFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment CurrentPlayerFragment.
+     * @return A new instance of fragment GameInfoFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static CurrentPlayerFragment newInstance(String param1, String param2) {
-        CurrentPlayerFragment fragment = new CurrentPlayerFragment();
+    public static GameInfoFragment newInstance(String param1, String param2) {
+        GameInfoFragment fragment = new GameInfoFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -59,6 +61,6 @@ public class CurrentPlayerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_current_player, container, false);
+        return inflater.inflate(R.layout.fragment_game_info, container, false);
     }
 }

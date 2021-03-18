@@ -1,4 +1,4 @@
-package ru.pyply.games.points;
+package ru.pyply.games.points.fragments;
 
 import android.os.Bundle;
 
@@ -8,12 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import ru.pyply.games.points.R;
+
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link PreviewLobbyInListFragment#newInstance} factory method to
+ * Use the {@link TimerFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PreviewLobbyInListFragment extends Fragment {
+public class TimerFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -24,7 +26,7 @@ public class PreviewLobbyInListFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public PreviewLobbyInListFragment() {
+    public TimerFragment() {
         // Required empty public constructor
     }
 
@@ -34,11 +36,11 @@ public class PreviewLobbyInListFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment PreviewLobbyInListFragment.
+     * @return A new instance of fragment TimerFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static PreviewLobbyInListFragment newInstance(String param1, String param2) {
-        PreviewLobbyInListFragment fragment = new PreviewLobbyInListFragment();
+    public static TimerFragment newInstance(String param1, String param2) {
+        TimerFragment fragment = new TimerFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -59,6 +61,6 @@ public class PreviewLobbyInListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_preview_lobby_in_list, container, false);
+        return inflater.inflate(R.layout.fragment_timer, container, false);
     }
 }

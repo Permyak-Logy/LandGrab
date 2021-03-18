@@ -1,4 +1,4 @@
-package ru.pyply.games.points;
+package ru.pyply.games.points.models;
 
 public class Land {
     protected long id;

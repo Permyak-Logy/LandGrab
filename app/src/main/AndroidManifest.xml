@@ -9,13 +9,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.LandGrab">
-        <activity android:name="ru.pyply.games.points.LobbyActivity" />
-        <activity android:name="ru.pyply.games.points.SettingsGameActivity" />
-        <activity android:name="ru.pyply.games.points.PlayOfflineActivity" />
-        <activity android:name="ru.pyply.games.points.PlayOnlineActivity" />
-        <activity android:name="ru.pyply.games.points.AccountActivity" />
-        <activity android:name="ru.pyply.games.points.GameActivity" /><!-- TODO: Убрать Title Bar -->
-        <activity android:name="ru.pyply.games.points.MainActivity">
+        <activity android:name="ru.pyply.games.points.activities.LobbyActivity" />
+        <activity android:name="ru.pyply.games.points.activities.SettingsGameActivity" />
+        <activity android:name="ru.pyply.games.points.activities.PlayOfflineActivity" />
+        <activity android:name="ru.pyply.games.points.activities.PlayOnlineActivity" />
+        <activity android:name="ru.pyply.games.points.activities.AccountActivity" />
+        <activity android:name="ru.pyply.games.points.activities.GameActivity" /><!-- TODO: Убрать Title Bar -->
+        <activity android:name="ru.pyply.games.points.activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="horizontal"
     android:gravity="center"
-    tools:context=".TimerFragment">
+    tools:context=".fragments.TimerFragment">
 
     <!-- TODO: Update blank fragment layout -->
 

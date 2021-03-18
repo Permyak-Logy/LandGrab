@@ -1,4 +1,4 @@
-package ru.pyply.games.points;
+package ru.pyply.games.points.views;
 
 import android.content.Context;
 import android.graphics.Canvas;

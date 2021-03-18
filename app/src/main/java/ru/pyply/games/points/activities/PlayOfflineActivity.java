@@ -1,10 +1,12 @@
-package ru.pyply.games.points;
+package ru.pyply.games.points.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+
+import ru.pyply.games.points.R;
 
 public class PlayOfflineActivity extends AppCompatActivity {
 

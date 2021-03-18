@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".PlayOnlineActivity">
+    tools:context=".activities.PlayOnlineActivity">
 
     <LinearLayout
         android:layout_width="350dp"
@@ -38,21 +38,21 @@
 
                 <fragment
                     android:id="@+id/fragment6"
-                    android:name="ru.pyply.games.points.PreviewLobbyInListFragment"
+                    android:name="ru.pyply.games.points.fragments.PreviewLobbyInListFragment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     tools:layout="@layout/fragment_preview_lobby_in_list" />
 
                 <fragment
                     android:id="@+id/fragment7"
-                    android:name="ru.pyply.games.points.PreviewLobbyInListFragment"
+                    android:name="ru.pyply.games.points.fragments.PreviewLobbyInListFragment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     tools:layout="@layout/fragment_preview_lobby_in_list" />
 
                 <fragment
                     android:id="@+id/fragment8"
-                    android:name="ru.pyply.games.points.PreviewLobbyInListFragment"
+                    android:name="ru.pyply.games.points.fragments.PreviewLobbyInListFragment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     tools:layout="@layout/fragment_preview_lobby_in_list" />
