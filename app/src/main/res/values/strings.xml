@@ -20,4 +20,7 @@
     <string name="max_count_captive">Наибольшее кол-во пленных</string>
     <string name="save">Сохранить</string>
     <string name="cancel">Отмена</string>
+    <string name="update">Обновить</string>
+    <string name="create_lobby">Создать лобби</string>
+    <string name="online_lobby">Online комнаты</string>
 </resources>
