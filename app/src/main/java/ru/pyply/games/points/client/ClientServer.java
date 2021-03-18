@@ -1,4 +1,4 @@
-package ru.pyply.games.points.async;
+package ru.pyply.games.points.client;
 
 public class ClientServer {
     private long id;
