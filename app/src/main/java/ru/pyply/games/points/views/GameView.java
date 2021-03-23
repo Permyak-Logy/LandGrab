@@ -52,8 +52,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
             System.out.println("onScroll");
             DrawThread dt = view.getDrawThread();
-            dt.camera_x -= distanceX / dt.zoom;
-            dt.camera_y -= distanceY / dt.zoom;
+            dt.camera_x -= distanceX / Math.sqrt(dt.zoom);
+            dt.camera_y -= distanceY / Math.sqrt(dt.zoom);
             // System.out.println(dt.camera_x + " " + dt.camera_y);
             return true;
         }
