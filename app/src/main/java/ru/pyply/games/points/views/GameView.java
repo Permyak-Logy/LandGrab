@@ -18,12 +18,28 @@ import ru.pyply.games.points.models.Camp;
 import ru.pyply.games.points.models.Point;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
+
+    // ------------------------------------------------------------- Scroll
+    private static class GestureListenerOnScroll extends GestureDetector.SimpleOnGestureListener {
+        GameView view;
+
+        public GestureListenerOnScroll(GameView view) {
+            super();
+            this.view = view;
+        }
+
+        @Override
+        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+            DrawThread dt = view.getDrawThread();
+            dt.camera_x -= distanceX / Math.sqrt(dt.zoom);
+            dt.camera_y -= distanceY / Math.sqrt(dt.zoom);
+            return true;
+        }
+    }
+
     private GestureDetector gesturesOnScroll;
-    private ScaleGestureDetector gesturesOnScale;
 
-    public DrawThread drawThread;
-
-
+    // ------------------------------------------------------------- Scale
     private static class GestureListenerOnScale extends ScaleGestureDetector.SimpleOnScaleGestureListener {
         GameView view;
 
@@ -43,23 +59,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
 
-    private static class GestureListenerOnScroll extends GestureDetector.SimpleOnGestureListener {
-        GameView view;
+    private ScaleGestureDetector gesturesOnScale;
 
-        public GestureListenerOnScroll(GameView view) {
-            super();
-            this.view = view;
-        }
-
-        @Override
-        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-            DrawThread dt = view.getDrawThread();
-            dt.camera_x -= distanceX / Math.sqrt(dt.zoom);
-            dt.camera_y -= distanceY / Math.sqrt(dt.zoom);
-            return true;
-        }
-    }
-
+    // ------------------------------------------------------------- Draw Tread
     public static class DrawThread extends Thread {
 
         private final SurfaceHolder surfaceHolder;
@@ -77,13 +79,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         // Цвета для ресования объектов с частными случаями
         public Paint background = new Paint();
         public Paint default_sheet_lines = new Paint();
-        public Paint default_sheet_points = new Paint();
 
         {
             // По умолчанию
             background.setColor(Color.WHITE);
-            default_sheet_lines.setColor(Color.GRAY);
-            default_sheet_points.setColor(Color.DKGRAY);
+            default_sheet_lines.setColor(Color.LTGRAY);
         }
 
 
@@ -122,36 +122,28 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
 
         public void drawSheet(Canvas canvas) {
-            // Определим сдвиг линий по умолчанию
-            int shift_x = getShiftSheetLinesX();
-            int shift_y = getShiftSheetLinesY();
-
-            // Рисуем сетку
-            for (int i = 0; shift_x + i * width_between_lines * zoom < canvas.getWidth(); i++) {
-                int x = (int) (shift_x + i * width_between_lines * zoom);
+            for (int i = 0; getPosX(i) < canvas.getWidth(); i++) {
+                int x = (int) (getPosX(i));
                 canvas.drawLine(x, 0, x, canvas.getHeight(), default_sheet_lines);
             }
 
-            for (int i = 0; shift_y + i * width_between_lines * zoom < canvas.getHeight(); i++) {
-                int y = (int) (shift_y + i * width_between_lines * zoom);
-                canvas.drawLine(0, y, canvas.getWidth(), y, default_sheet_points);
+            for (int i = 0; getPosY(i) < canvas.getHeight(); i++) {
+                int y = (int) (getPosY(i));
+                canvas.drawLine(0, y, canvas.getWidth(), y, default_sheet_lines);
             }
         }
 
         public void drawPoints(Canvas canvas) {
             // TODO: Пофиксить дёрганье точек и их качание при пролистывания карты
-            int shift_x = getShiftSheetLinesX();
-            int shift_y = getShiftSheetLinesY();
 
-            for (int i = 0; shift_x + i * width_between_lines * zoom <= canvas.getWidth(); i++) {
-                for (int j = 0; shift_y + j * width_between_lines * zoom <= canvas.getHeight(); j++) {
+            for (int i = 0; getPosX(i) <= canvas.getWidth(); i++) {
+                for (int j = 0; getPosY(j) <= canvas.getHeight(); j++) {
                     // Координаты точки (в системе), которую мы рисуем
                     Point point = new Point((long) (-this.camera_x / (width_between_lines * zoom)) + i,
                             (long) (-this.camera_y / (width_between_lines * zoom)) + j);
                     Camp camp = Camp.map_camps.get(point);
                     if (camp != null) {
-                        camp.draw(canvas, shift_x + i * width_between_lines * zoom,
-                                shift_y + j * width_between_lines * zoom, zoom);
+                        camp.draw(canvas, getPosX(i), getPosY(j), zoom);
                     }
                 }
             }
@@ -159,6 +151,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         @SuppressWarnings({"unused", "RedundantSuppression"})
         public void drawWalls(Canvas canvas) {
+
         }
 
         @SuppressWarnings({"unused", "RedundantSuppression"})
@@ -167,14 +160,29 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
 
         public int getShiftSheetLinesX() {
+            // Даёт сдвиг от края (горизонтального) самой ближайшей линии вдоль Y
             return (int) (this.camera_x % (width_between_lines * zoom));
         }
 
         public int getShiftSheetLinesY() {
+            // Даёт сдвиг от края (вертикального) самой ближайшелй линии вдоль X
             return (int) (this.camera_y % (width_between_lines * zoom));
+        }
+
+        public float getPosX(int i) {
+            // Даёт координату X на видимой сетке для i перекрестия по оси X
+            return getShiftSheetLinesX() + i * width_between_lines * zoom;
+        }
+
+        public float getPosY(int i) {
+            // Даёт координату Y на видимой сетке для i перекрестия по оси Y
+            return getShiftSheetLinesY() + i * width_between_lines * zoom;
         }
     }
 
+    public DrawThread drawThread;
+
+    // ------------------------------------------------------------- Init
     public GameView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         getHolder().addCallback(this);
@@ -188,7 +196,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public GameView(Context context) {
         super(context);
         getHolder().addCallback(this);
-
     }
 
     public DrawThread getDrawThread() {
@@ -202,8 +209,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         drawThread = new DrawThread(getHolder());
         drawThread.start();
-
-
     }
 
     @Override
@@ -220,7 +225,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 drawThread.join();
                 retry = false;
             } catch (InterruptedException e) {
-                //
+                e.printStackTrace();
             }
         }
     }
