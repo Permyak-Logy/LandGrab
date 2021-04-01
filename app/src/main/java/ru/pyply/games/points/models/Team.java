@@ -1,68 +1,78 @@
 package ru.pyply.games.points.models;
 
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.media.Image;
+import android.util.Log;
 
 import java.util.ArrayList;
+
+import ru.pyply.games.points.R;
 
 
 public class Team {
     public ArrayList<Player> players;
-    public Player leader;
     public Paint paint;
-    public Image icon;
+    private String name;
 
-    public Team(Player leader, int color) {
+    public static int count_teams = 0;
+
+    public Team(Player[] players_, int color, String name) {
+        this(players_, color);
+        setName(name);
+    }
+
+    public Team(Player[] players_, int color) {
         players = new ArrayList<>();
         paint = new Paint();
         paint.setColor(color);
 
-        joinPlayer(leader);
-        updatePlayers();
+        name = R.string.team + " " + count_teams++;
+
+        for (Player player : players_) {
+            joinPlayer(player);
+        }
     }
 
-    public Team(Player leader, Color color, Image icon) {
+    public void setName(String name) {
+        this.name = name;
     }
 
+    public String getName(String name) {
+        return name;
+    }
+
+    @SuppressWarnings("NullableProblems")
     @Override
     public String toString() {
-        return "Team{}";
+        return String.format("%s{color=%s}", getClass().getName(), paint.getColor());
     }
 
     public Camp createCamp(Point point) {
         return new Camp(point, this);
     }
 
-    public boolean joinPlayer(Player player) {
-        if (player.team != null)
-            return false;
-
-        players.add(player);
-        player.team = this;
-
-        return true;
-    }
-
-    public boolean kickPlayer(Player player) {
-        return false;
-    }
-
-    public boolean hasPlayer(Player player) {
-        return false;
-    }
-
-    public void updatePlayers() {
-        if (leader == null) {
-            leader = players.get(Math.min(players.size() - 1, (int) Math.floor(Math.random() * players.size())));
+    public void joinPlayer(Player player) {
+        if (hasPlayer(player))
+            Log.e("TEAM", String.format("Не удалось добавить игрока %s в команду %s (игрок уже в команде)", player, this));
+        else if (player.team != null)
+            Log.e("TEAM", String.format("Не удалость добавить игрока %s в команду %s (игрок уже в другой команде)", player, this));
+        else {
+            players.add(player);
+            player.team = this;
+            Log.i("TEAM", String.format("Игрок %s присоединился к команде %s", player, this));
         }
     }
 
-    public boolean changeLeader(Player player) {
-        return false;
+    public void kickPlayer(Player player) {
+        if (!hasPlayer(player))
+            Log.e("TEAM", String.format("Не удалось искючить игрока %s из команды %s (игрок не состоит в этой команде)", player, this));
+        else {
+            players.remove(player);
+            player.team = null;
+            Log.i("TEAM", String.format("Игрок %s был исключён из команды %s", player, this));
+        }
     }
 
-    public boolean leave() {
-        return false;
+    public boolean hasPlayer(Player player) {
+        return players.contains(player);
     }
 }
