@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.MotionEvent;
 
 import ru.pyply.games.points.R;
 import ru.pyply.games.points.db.DBGames;
@@ -29,13 +30,15 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-        Camp.map_camps.clear();
+        prepareData();
+        initDB();
 
         MePlayer me_player = new MePlayer("Permyak_Logy");
-        Team team_pyply = new Team(new Player[]{me_player}, getResources().getColor(R.color.purple_700), "PyPLy");
+        Team team_pyply = new Team(new Player[]{me_player}, getResources().getColor(R.color.purple_500), "PyPLy");
+        Team team_nicktozz = new Team(new Player[]{new Player("NicktoZz")}, getResources().getColor(R.color.teal_200));
 
 
-        teams = new Team[]{team_pyply};
+        teams = new Team[]{team_pyply, team_nicktozz};
 
         new Wall(me_player.createCamp(new Point(0, 0)), me_player.createCamp(new Point(0, 1)));
         new Wall(me_player.createCamp(new Point(2, 2)), me_player.createCamp(new Point(-3, -5)));
@@ -45,6 +48,11 @@ public class GameActivity extends AppCompatActivity {
     public void initDB() {
         DBConnector = new DBGames(this);
         mContext = this;
+    }
+
+    public void prepareData() {
+        Camp.map_camps.clear();
+        Wall.walls_map.clear();
     }
 
     public void nextMove() {

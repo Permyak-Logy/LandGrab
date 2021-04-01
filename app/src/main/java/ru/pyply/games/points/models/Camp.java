@@ -9,16 +9,19 @@ import ru.pyply.games.points.views.GameView;
 public class Camp implements DrawGameObj {
     public Team team;
     public Point point;
-    public final int radius = 20;
+    public static final int RADIUS = 20;
 
-    static public HashMap<Point, Camp> map_camps = new HashMap<>();
+    public static HashMap<Point, Camp> map_camps = new HashMap<>();
 
     public Camp(Point point, Team team) {
-        map_camps.put(point, this);
+
+
         this.team = team;
         this.point = point;
 
         System.out.println("Created: " + this);
+        map_camps.put(point, this);
+        System.out.println("Putted: " + this);
     }
 
     @SuppressWarnings("NullableProblems")
@@ -27,7 +30,7 @@ public class Camp implements DrawGameObj {
         return "Camp{" +
                 "team=" + team +
                 ", point=" + point +
-                ", radius=" + radius +
+                ", radius=" + RADIUS +
                 '}';
     }
 
@@ -35,15 +38,15 @@ public class Camp implements DrawGameObj {
     public void draw(Canvas canvas, float cam_x, float cam_y, float zoom) {
         float x = GameView.DrawThread.getRealPosX(point.x, cam_x, zoom);
         float y = GameView.DrawThread.getRealPosY(point.y, cam_y, zoom);
-        canvas.drawCircle(x, y, radius * zoom, team.paintPoints);
+        canvas.drawCircle(x, y, RADIUS * zoom, team.paintPoints);
     }
 
     @Override
     public boolean isVisibleOnSheet(Canvas canvas, float cam_x, float cam_y, float zoom) {
         float x = GameView.DrawThread.getRealPosX(point.x, cam_x, zoom);
         float y = GameView.DrawThread.getRealPosY(point.y, cam_y, zoom);
-        if (!(-radius <= x && x <= canvas.getWidth() + radius)) {
+        if (!(-RADIUS <= x && x <= canvas.getWidth() + RADIUS)) {
             return false;
-        } else return (-radius <= y && y <= canvas.getHeight() + radius);
+        } else return (-RADIUS <= y && y <= canvas.getHeight() + RADIUS);
     }
 }

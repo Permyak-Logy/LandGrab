@@ -1,6 +1,8 @@
 package ru.pyply.games.points.views;
 
 import android.annotation.SuppressLint;
+import android.app.ActivityManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -14,17 +16,19 @@ import android.view.SurfaceView;
 
 import androidx.annotation.NonNull;
 
+import ru.pyply.games.points.activities.GameActivity;
 import ru.pyply.games.points.models.Camp;
 import ru.pyply.games.points.models.Point;
+import ru.pyply.games.points.models.Team;
 import ru.pyply.games.points.models.Wall;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
-    // ------------------------------------------------------------- Scroll
-    private static class GestureListenerOnScroll extends GestureDetector.SimpleOnGestureListener {
+    // ------------------------------------------------------------- Scroll and Double Click
+    private static class GestureListenerOnTouch extends GestureDetector.SimpleOnGestureListener {
         GameView view;
 
-        public GestureListenerOnScroll(GameView view) {
+        public GestureListenerOnTouch(GameView view) {
             super();
             this.view = view;
         }
@@ -36,9 +40,48 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             dt.camera_y -= distanceY / Math.sqrt(dt.zoom);
             return true;
         }
+
+        @Override
+        public boolean onDoubleTap(MotionEvent e) {
+            DrawThread dt = view.getDrawThread();
+            float x = DrawThread.getPointXOnSheet(e.getX(), dt.camera_x, dt.zoom);
+            boolean val_x = true;
+
+            float y = DrawThread.getPointYOnSheet(e.getY(), dt.camera_y, dt.zoom);
+            boolean val_y = true;
+
+            float r = 0.33f;
+
+            if (Math.abs(x) % 1 <= r)
+                x = (float) Math.copySign(Math.floor(Math.abs(x)), x);
+            else if (Math.abs(x) % 1 >= 1 - r)
+                x = (float) Math.copySign(Math.ceil(Math.abs(x)), x);
+            else
+                val_x = false;
+
+            if (Math.abs(y) % 1 <= r)
+                y = (float) Math.copySign(Math.floor(Math.abs(y)), y);
+            else if (Math.abs(y) % 1 >= 1 - r)
+                y = (float) Math.copySign(Math.ceil(Math.abs(y)), y);
+            else
+                val_y = false;
+
+            if (val_x && val_y) {
+                Point point = new Point((long) x, (long) y);
+                GameActivity activity = (GameActivity) view.getContext();
+
+                if (Camp.map_camps.get(point) == null) {
+                    activity.teams[activity.team_move_i].createCamp(point);
+                    activity.nextMove();
+                }
+            }
+
+            System.out.printf("double click %s %s %s\n", r, x, y);
+            return true;
+        }
     }
 
-    private GestureDetector gesturesOnScroll;
+    private GestureDetector gesturesOnTouch;
 
     // ------------------------------------------------------------- Scale
     private static class GestureListenerOnScale extends ScaleGestureDetector.SimpleOnScaleGestureListener {
@@ -176,6 +219,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             return getShiftSheetLinesX(camera_x, zoom) + i * WIDTH_BETWEEN_LINES * zoom;
         }
 
+        public static float getPosY(int i, float camera_y, float zoom) {
+            // Даёт координату Y на видимой сетке для i перекрестия по оси Y
+            return getShiftSheetLinesY(camera_y, zoom) + i * WIDTH_BETWEEN_LINES * zoom;
+        }
+
         public static float getRealPosX(long i, float camera_x, float zoom) {
             // Даёт координату X на всей сетке для i перекрестия по оси X
             return WIDTH_BETWEEN_LINES * zoom * i + camera_x;
@@ -186,9 +234,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             return WIDTH_BETWEEN_LINES * zoom * i + camera_y;
         }
 
-        public static float getPosY(int i, float camera_y, float zoom) {
-            // Даёт координату Y на видимой сетке для i перекрестия по оси Y
-            return getShiftSheetLinesY(camera_y, zoom) + i * WIDTH_BETWEEN_LINES * zoom;
+        public static float getPointXOnSheet(float point_x, float camera_x, float zoom) {
+            return (point_x - camera_x) / (WIDTH_BETWEEN_LINES * zoom);
+        }
+
+        public static float getPointYOnSheet(float point_y, float camera_y, float zoom) {
+            return (point_y - camera_y) / (WIDTH_BETWEEN_LINES * zoom);
         }
     }
 
@@ -216,7 +267,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        gesturesOnScroll = new GestureDetector(getContext(), new GestureListenerOnScroll(this));
+        gesturesOnTouch = new GestureDetector(getContext(), new GestureListenerOnTouch(this));
         gesturesOnScale = new ScaleGestureDetector(getContext(), new GestureListenerOnScale(this));
 
         drawThread = new DrawThread(getHolder());
@@ -246,7 +297,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         super.onTouchEvent(event);
-        gesturesOnScroll.onTouchEvent(event);
+        gesturesOnTouch.onTouchEvent(event);
         gesturesOnScale.onTouchEvent(event);
         return true;
     }
