@@ -4,6 +4,8 @@ import android.graphics.Canvas;
 
 import java.util.HashMap;
 
+import ru.pyply.games.points.views.GameView;
+
 public class Camp implements DrawGameObj {
     public Team team;
     public Point point;
@@ -30,8 +32,18 @@ public class Camp implements DrawGameObj {
     }
 
     @Override
-    public void draw(Canvas canvas, float x, float y, float zoom) {
-        System.out.println("draw" + point);
-        canvas.drawCircle(x, y, (float) (radius * zoom), team.paint);
+    public void draw(Canvas canvas, float cam_x, float cam_y, float zoom) {
+        float x = GameView.DrawThread.getRealPosX(point.x, cam_x, zoom);
+        float y = GameView.DrawThread.getRealPosY(point.y, cam_y, zoom);
+        canvas.drawCircle(x, y, radius * zoom, team.paintPoints);
+    }
+
+    @Override
+    public boolean isVisibleOnSheet(Canvas canvas, float cam_x, float cam_y, float zoom) {
+        float x = GameView.DrawThread.getRealPosX(point.x, cam_x, zoom);
+        float y = GameView.DrawThread.getRealPosY(point.y, cam_y, zoom);
+        if (!(-radius <= x && x <= canvas.getWidth() + radius)) {
+            return false;
+        } else return (-radius <= y && y <= canvas.getHeight() + radius);
     }
 }

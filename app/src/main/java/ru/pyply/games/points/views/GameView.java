@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 
 import ru.pyply.games.points.models.Camp;
 import ru.pyply.games.points.models.Point;
+import ru.pyply.games.points.models.Wall;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
@@ -69,12 +70,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         private volatile boolean running = true; //флаг для остановки потока
 
         // Параметры для отображения поля
-        private float zoom = 1;
-        private float camera_x = 0;
-        private float camera_y = 0;
+        public float zoom = 1;
+        public float camera_x = 0;
+        public float camera_y = 0;
 
         // Стандартные свойства сетки
-        private final int width_between_lines = 100;
+        public static final int WIDTH_BETWEEN_LINES = 100;
 
         // Цвета для ресования объектов с частными случаями
         public Paint background = new Paint();
@@ -122,36 +123,32 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
 
         public void drawSheet(Canvas canvas) {
-            for (int i = 0; getPosX(i) < canvas.getWidth(); i++) {
-                int x = (int) (getPosX(i));
+            for (int i = 0; getPosX(i, camera_x, zoom) < canvas.getWidth(); i++) {
+                int x = (int) (getPosX(i, camera_x, zoom));
                 canvas.drawLine(x, 0, x, canvas.getHeight(), default_sheet_lines);
             }
 
-            for (int i = 0; getPosY(i) < canvas.getHeight(); i++) {
-                int y = (int) (getPosY(i));
+            for (int i = 0; getPosY(i, camera_y, zoom) < canvas.getHeight(); i++) {
+                int y = (int) (getPosY(i, camera_y, zoom));
                 canvas.drawLine(0, y, canvas.getWidth(), y, default_sheet_lines);
             }
         }
 
         public void drawPoints(Canvas canvas) {
-            // TODO: Пофиксить дёрганье точек и их качание при пролистывания карты
-
-            for (int i = 0; getPosX(i) <= canvas.getWidth(); i++) {
-                for (int j = 0; getPosY(j) <= canvas.getHeight(); j++) {
-                    // Координаты точки (в системе), которую мы рисуем
-                    Point point = new Point((long) (-this.camera_x / (width_between_lines * zoom)) + i,
-                            (long) (-this.camera_y / (width_between_lines * zoom)) + j);
-                    Camp camp = Camp.map_camps.get(point);
-                    if (camp != null) {
-                        camp.draw(canvas, getPosX(i), getPosY(j), zoom);
-                    }
+            for (Camp camp : Camp.map_camps.values()) {
+                if (camp.isVisibleOnSheet(canvas, camera_x, camera_y, zoom)) {
+                    camp.draw(canvas, camera_x, camera_y, zoom);
                 }
             }
         }
 
         @SuppressWarnings({"unused", "RedundantSuppression"})
         public void drawWalls(Canvas canvas) {
-
+            for (Wall wall : Wall.walls_map.values()) {
+                if (wall.isVisibleOnSheet(canvas, camera_x, camera_y, zoom)) {
+                    wall.draw(canvas, camera_x, camera_y, zoom);
+                }
+            }
         }
 
         @SuppressWarnings({"unused", "RedundantSuppression"})
@@ -159,24 +156,39 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         }
 
-        public int getShiftSheetLinesX() {
+        public static Point getLeftTopPointOnSheet(float camera_x, float camera_y, float zoom) {
+            return new Point((long) (-camera_x / (WIDTH_BETWEEN_LINES * zoom)),
+                    (long) (-camera_y / (WIDTH_BETWEEN_LINES * zoom)));
+        }
+
+        public static int getShiftSheetLinesX(float camera_x, float zoom) {
             // Даёт сдвиг от края (горизонтального) самой ближайшей линии вдоль Y
-            return (int) (this.camera_x % (width_between_lines * zoom));
+            return (int) (camera_x % (WIDTH_BETWEEN_LINES * zoom));
         }
 
-        public int getShiftSheetLinesY() {
+        public static int getShiftSheetLinesY(float camera_y, float zoom) {
             // Даёт сдвиг от края (вертикального) самой ближайшелй линии вдоль X
-            return (int) (this.camera_y % (width_between_lines * zoom));
+            return (int) (camera_y % (WIDTH_BETWEEN_LINES * zoom));
         }
 
-        public float getPosX(int i) {
+        public static float getPosX(int i, float camera_x, float zoom) {
             // Даёт координату X на видимой сетке для i перекрестия по оси X
-            return getShiftSheetLinesX() + i * width_between_lines * zoom;
+            return getShiftSheetLinesX(camera_x, zoom) + i * WIDTH_BETWEEN_LINES * zoom;
         }
 
-        public float getPosY(int i) {
+        public static float getRealPosX(long i, float camera_x, float zoom) {
+            // Даёт координату X на всей сетке для i перекрестия по оси X
+            return WIDTH_BETWEEN_LINES * zoom * i + camera_x;
+        }
+
+        public static float getRealPosY(long i, float camera_y, float zoom) {
+            // Даёт координату X на всей сетке для i перекрестия по оси Y
+            return WIDTH_BETWEEN_LINES * zoom * i + camera_y;
+        }
+
+        public static float getPosY(int i, float camera_y, float zoom) {
             // Даёт координату Y на видимой сетке для i перекрестия по оси Y
-            return getShiftSheetLinesY() + i * width_between_lines * zoom;
+            return getShiftSheetLinesY(camera_y, zoom) + i * WIDTH_BETWEEN_LINES * zoom;
         }
     }
 

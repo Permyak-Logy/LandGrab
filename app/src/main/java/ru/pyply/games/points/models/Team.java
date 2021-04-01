@@ -10,7 +10,9 @@ import ru.pyply.games.points.R;
 
 public class Team {
     public ArrayList<Player> players;
-    public Paint paint;
+    public Paint paintPoints;
+    public Paint paintLines;
+
     private String name;
 
     public static int count_teams = 0;
@@ -22,8 +24,10 @@ public class Team {
 
     public Team(Player[] players_, int color) {
         players = new ArrayList<>();
-        paint = new Paint();
-        paint.setColor(color);
+        paintPoints = new Paint();
+        paintPoints.setColor(color);
+        paintLines = new Paint();
+        paintLines.setColor(color);
 
         name = R.string.team + " " + count_teams++;
 
@@ -43,7 +47,7 @@ public class Team {
     @SuppressWarnings("NullableProblems")
     @Override
     public String toString() {
-        return String.format("%s{color=%s}", getClass().getName(), paint.getColor());
+        return String.format("%s{color=%s}", getClass().getName(), paintPoints.getColor());
     }
 
     public Camp createCamp(Point point) {

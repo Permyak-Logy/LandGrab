@@ -12,6 +12,7 @@ import ru.pyply.games.points.models.MePlayer;
 import ru.pyply.games.points.models.Player;
 import ru.pyply.games.points.models.Point;
 import ru.pyply.games.points.models.Team;
+import ru.pyply.games.points.models.Wall;
 
 
 // TODO: Для каждой можели сделать адекватный toString()...
@@ -36,10 +37,9 @@ public class GameActivity extends AppCompatActivity {
 
         teams = new Team[]{team_pyply};
 
-        me_player.createCamp(new Point(0, 0));
-        me_player.createCamp(new Point(0, 1));
-        me_player.createCamp(new Point(2, 2));
-        me_player.createCamp(new Point(-5, -5));
+        new Wall(me_player.createCamp(new Point(0, 0)), me_player.createCamp(new Point(0, 1)));
+        new Wall(me_player.createCamp(new Point(2, 2)), me_player.createCamp(new Point(-3, -5)));
+
     }
 
     public void initDB() {
