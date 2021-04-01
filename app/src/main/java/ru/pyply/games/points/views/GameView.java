@@ -16,6 +16,8 @@ import android.view.SurfaceView;
 
 import androidx.annotation.NonNull;
 
+import java.util.HashSet;
+
 import ru.pyply.games.points.activities.GameActivity;
 import ru.pyply.games.points.models.Camp;
 import ru.pyply.games.points.models.Point;
@@ -165,6 +167,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(), background);
         }
 
+        // TODO: Пофиксить аномальные ошиюки с вылетами (Возможно из-за добавления новых объектов во время отрисовки)
         public void drawSheet(Canvas canvas) {
             for (int i = 0; getPosX(i, camera_x, zoom) < canvas.getWidth(); i++) {
                 int x = (int) (getPosX(i, camera_x, zoom));

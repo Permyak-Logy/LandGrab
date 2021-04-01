@@ -13,10 +13,11 @@ public class Wall implements DrawGameObj {
     public static HashMap<DoublePoint, Wall> walls_map = new HashMap<>();
 
     public Wall(Camp camp_a, Camp camp_b) {
-        walls_map.put(new DoublePoint(camp_a.point, camp_b.point), this);
-
         this.camp_a = camp_a;
         this.camp_b = camp_b;
+
+        walls_map.put(new DoublePoint(camp_a.point, camp_b.point), this);
+        walls_map.put(new DoublePoint(camp_b.point, camp_a.point), this);
     }
 
 
@@ -35,5 +36,20 @@ public class Wall implements DrawGameObj {
     @Override
     public boolean isVisibleOnSheet(Canvas canvas, float cam_x, float cam_y, float zoom) {
         return camp_a.isVisibleOnSheet(canvas, cam_x, cam_y, zoom) || camp_b.isVisibleOnSheet(canvas, cam_x, cam_y, zoom);
+    }
+
+    public static void autoCreator(Point point) {
+        Camp camp = Camp.map_camps.get(point);
+        int[][] dirs = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+        for (int[] dir : dirs) {
+            Camp other = Camp.map_camps.get(new Point(point.x + dir[0], point.y + dir[1]));
+
+            if (camp != null && other != null)
+                if (camp.team == other.team)
+                    if (walls_map.get(new DoublePoint(camp.point, other.point)) == null)
+                        new Wall(camp, other);
+
+
+        }
     }
 }

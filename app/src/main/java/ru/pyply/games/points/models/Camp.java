@@ -22,6 +22,8 @@ public class Camp implements DrawGameObj {
         System.out.println("Created: " + this);
         map_camps.put(point, this);
         System.out.println("Putted: " + this);
+
+        Wall.autoCreator(point);
     }
 
     @SuppressWarnings("NullableProblems")
