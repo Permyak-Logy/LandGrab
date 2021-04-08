@@ -40,8 +40,8 @@ public class Team {
         this.name = name;
     }
 
-    public String getName(String name) {
-        return name;
+    public String getName() {
+        return this.name;
     }
 
     @SuppressWarnings("NullableProblems")

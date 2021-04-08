@@ -22,7 +22,7 @@
         android:layout_weight="40" />
 
     <fragment
-        android:id="@+id/fragment3"
+        android:id="@+id/currentTeam"
         android:name="ru.pyply.games.points.fragments.CurrentPlayerFragment"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
