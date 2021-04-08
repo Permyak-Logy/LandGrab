@@ -16,7 +16,10 @@ import android.view.SurfaceView;
 
 import androidx.annotation.NonNull;
 
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
 
 import ru.pyply.games.points.activities.GameActivity;
 import ru.pyply.games.points.models.Camp;
@@ -181,18 +184,25 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
 
         public void drawPoints(Canvas canvas) {
-            for (Camp camp : Camp.map_camps.values()) {
-                if (camp.isVisibleOnSheet(canvas, camera_x, camera_y, zoom)) {
-                    camp.draw(canvas, camera_x, camera_y, zoom);
+            synchronized (Camp.map_camps) {
+                Camp[] camps = Camp.map_camps.values().toArray(new Camp[0]);
+
+                for (Camp camp : camps) {
+                    if (camp.isVisibleOnSheet(canvas, camera_x, camera_y, zoom)) {
+                        camp.draw(canvas, camera_x, camera_y, zoom);
+                    }
                 }
             }
         }
 
         @SuppressWarnings({"unused", "RedundantSuppression"})
         public void drawWalls(Canvas canvas) {
-            for (Wall wall : Wall.walls_map.values()) {
-                if (wall.isVisibleOnSheet(canvas, camera_x, camera_y, zoom)) {
-                    wall.draw(canvas, camera_x, camera_y, zoom);
+            synchronized (Wall.walls_map) {
+                Wall[] walls = Wall.walls_map.values().toArray(new Wall[0]);
+                for (Wall wall : walls) {
+                    if (wall.isVisibleOnSheet(canvas, camera_x, camera_y, zoom)) {
+                        wall.draw(canvas, camera_x, camera_y, zoom);
+                    }
                 }
             }
         }

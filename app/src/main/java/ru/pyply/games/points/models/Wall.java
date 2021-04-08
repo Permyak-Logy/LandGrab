@@ -2,7 +2,9 @@ package ru.pyply.games.points.models;
 
 import android.graphics.Canvas;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 
 import ru.pyply.games.points.views.GameView;
 
@@ -10,14 +12,16 @@ public class Wall implements DrawGameObj {
     public Camp camp_a;
     public Camp camp_b;
 
-    public static HashMap<DoublePoint, Wall> walls_map = new HashMap<>();
+    public static final Map<DoublePoint, Wall> walls_map = Collections.synchronizedMap(new HashMap<>());
 
     public Wall(Camp camp_a, Camp camp_b) {
         this.camp_a = camp_a;
         this.camp_b = camp_b;
 
-        walls_map.put(new DoublePoint(camp_a.point, camp_b.point), this);
-        walls_map.put(new DoublePoint(camp_b.point, camp_a.point), this);
+        synchronized (walls_map) {
+            walls_map.put(new DoublePoint(camp_a.point, camp_b.point), this);
+            walls_map.put(new DoublePoint(camp_b.point, camp_a.point), this);
+        }
     }
 
 
