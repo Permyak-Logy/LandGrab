@@ -87,6 +87,12 @@ public class GameActivity extends AppCompatActivity {
         nextMove();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        timerStep.cancel();
+    }
+
     public void initDB() {
         DBConnector = new DBGames(this);
         mContext = this;
