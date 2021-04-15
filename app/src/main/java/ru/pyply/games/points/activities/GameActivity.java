@@ -46,6 +46,10 @@ public class GameActivity extends AppCompatActivity {
 
 
         public void onTick(long millisUntilFinished) {
+            FragmentManager fragmentManager = activity.getSupportFragmentManager();
+            GameInfoFragment gameInfoFragment = (GameInfoFragment) fragmentManager.findFragmentById(R.id.game_info);
+            assert gameInfoFragment != null;
+            gameInfoFragment.setValueTimer((int) (millisUntilFinished / 1000));
 
         }
 
@@ -71,15 +75,16 @@ public class GameActivity extends AppCompatActivity {
 
         MePlayer me_player = new MePlayer("Permyak_Logy");
         Team team_pyply = new Team(new Player[]{me_player}, getResources().getColor(R.color.pyply_team), "PyPLy");
-        Team team_nicktozz = new Team(new Player[]{new Player("NicktoZz")}, getResources().getColor(R.color.teal_200));
+        Team team_nicktozz = new Team(new Player[]{new Player("NicktoZz")}, getResources().getColor(R.color.teal_200), "Immortal");
 
 
         teams = new Team[]{team_pyply, team_nicktozz};
+        team_move_i = teams.length - 1;
 
         new Wall(me_player.createCamp(new Point(0, 0)), me_player.createCamp(new Point(0, 1)));
         new Wall(me_player.createCamp(new Point(2, 2)), me_player.createCamp(new Point(-3, -5)));
 
-
+        nextMove();
     }
 
     public void initDB() {

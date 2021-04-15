@@ -15,6 +15,9 @@ import ru.pyply.games.points.R;
 import ru.pyply.games.points.models.Team;
 
 public class GameInfoFragment extends Fragment {
+    CurrentPlayerFragment currentPlayerFragment;
+    TimerFragment timerFragment;
+
     public GameInfoFragment() {
         // Required empty public constructor
     }
@@ -22,24 +25,29 @@ public class GameInfoFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     public void setCurrentTeam(Team team) {
-        FragmentManager fragmentManager = getFragmentManager();
-        assert fragmentManager != null;
-        CurrentPlayerFragment currentPlayerFragment = (CurrentPlayerFragment) fragmentManager.findFragmentById(R.id.currentPlayer);
-
+        if (currentPlayerFragment == null) {
+            FragmentManager fragmentManager = getChildFragmentManager();
+            currentPlayerFragment = (CurrentPlayerFragment) fragmentManager.findFragmentById(R.id.currentPlayer);
+        }
         assert currentPlayerFragment != null;
+
         currentPlayerFragment.setPlayer(team.players.get(0));
         currentPlayerFragment.setTeam(team);
         currentPlayerFragment.setColor(team.paintPoints.getColor());
     }
 
     public void setValueTimer(int value) {
-        FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
-        TimerFragment timerFragment = (TimerFragment) fragmentManager.findFragmentById(R.id.timer);
-        assert timerFragment != null;
+        if (timerFragment == null) {
+            FragmentManager fragmentManager = getChildFragmentManager();
+            timerFragment = (TimerFragment) fragmentManager.findFragmentById(R.id.timer);
+        }
 
+        assert timerFragment != null;
+        timerFragment.setValueTimer(value);
     }
 
     @Override
