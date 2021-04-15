@@ -49,7 +49,7 @@ public class GameActivity extends AppCompatActivity {
             FragmentManager fragmentManager = activity.getSupportFragmentManager();
             GameInfoFragment gameInfoFragment = (GameInfoFragment) fragmentManager.findFragmentById(R.id.game_info);
             assert gameInfoFragment != null;
-            gameInfoFragment.setValueTimer((int) (millisUntilFinished / 1000));
+            gameInfoFragment.setValueTimer((int) Math.round(millisUntilFinished / 1000.));
 
         }
 
@@ -70,7 +70,7 @@ public class GameActivity extends AppCompatActivity {
         prepareData();
         initDB();
 
-        timerStep = new MyTimer(60 * 1000, 1000, this);
+        timerStep = new MyTimer(60 * 1000, 499, this);
         timerStep.start();
 
         MePlayer me_player = new MePlayer("Permyak_Logy");
