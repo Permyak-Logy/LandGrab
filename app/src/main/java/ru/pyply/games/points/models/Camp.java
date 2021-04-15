@@ -23,9 +23,7 @@ public class Camp implements DrawGameObj {
         this.point = point;
 
         synchronized (map_camps) {
-            System.out.println("Created: " + this);
             map_camps.put(point, this);
-            System.out.println("Putted: " + this);
         }
         Wall.autoCreator(point);
     }

@@ -8,13 +8,18 @@
     android:orientation="vertical"
     tools:context=".activities.GameActivity">
 
+    <!-- <View
+        android:id="@+id/game_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" /> -->
+
     <fragment
         android:id="@+id/game_info"
         android:name="ru.pyply.games.points.fragments.GameInfoFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:tag="game_info_tag"
         tools:layout="@layout/fragment_game_info" />
+
 
     <ru.pyply.games.points.views.GameView
         android:layout_width="match_parent"
