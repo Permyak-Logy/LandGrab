@@ -10,6 +10,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
+import android.widget.Toast;
 
 import ru.pyply.games.points.R;
 import ru.pyply.games.points.db.DBGames;
@@ -26,16 +27,19 @@ public class GameActivity extends AppCompatActivity {
 
     private class MyTimer extends CountDownTimer {
         GameActivity activity;
-        public MyTimer(long millisInFuture, long countDownInterval)
+        public MyTimer(long millisInFuture, long countDownInterval, GameActivity activity)
         {
             super(millisInFuture, countDownInterval);
-            this.activity = (GameActivity) getApplicationContext();
+            this.activity = activity;
         }
 
         @Override
         public void onFinish()
         {
             activity.nextMove();
+
+            Toast.makeText(activity, R.string.time_is_up, Toast.LENGTH_SHORT).show();
+
             Log.i("TimerStep", "Время хода закончилось. Переход к следующему игроку");
         }
 
@@ -72,10 +76,11 @@ public class GameActivity extends AppCompatActivity {
         new Wall(me_player.createCamp(new Point(0, 0)), me_player.createCamp(new Point(0, 1)));
         new Wall(me_player.createCamp(new Point(2, 2)), me_player.createCamp(new Point(-3, -5)));
 
-        timerStep = new MyTimer(60 * 1000, 1000);
+        timerStep = new MyTimer(60 * 1000, 1000, this);
         timerStep.start();
 
     }
+
 
     public void initDB() {
         DBConnector = new DBGames(this);
