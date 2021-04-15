@@ -8,6 +8,8 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.util.Log;
 
 import ru.pyply.games.points.R;
 import ru.pyply.games.points.db.DBGames;
@@ -22,8 +24,32 @@ import ru.pyply.games.points.models.Wall;
 
 public class GameActivity extends AppCompatActivity {
 
+    private class MyTimer extends CountDownTimer {
+        GameActivity activity;
+        public MyTimer(long millisInFuture, long countDownInterval)
+        {
+            super(millisInFuture, countDownInterval);
+            this.activity = (GameActivity) getApplicationContext();
+        }
+
+        @Override
+        public void onFinish()
+        {
+            activity.nextMove();
+            Log.i("TimerStep", "Время хода закончилось. Переход к следующему игроку");
+        }
+
+
+        public void onTick(long millisUntilFinished)
+        {
+
+        }
+
+    }
+
     DBGames DBConnector;
     Context mContext;
+    MyTimer timerStep;
 
     public Team[] teams;
     public int team_move_i = 0;
@@ -46,6 +72,9 @@ public class GameActivity extends AppCompatActivity {
         new Wall(me_player.createCamp(new Point(0, 0)), me_player.createCamp(new Point(0, 1)));
         new Wall(me_player.createCamp(new Point(2, 2)), me_player.createCamp(new Point(-3, -5)));
 
+        timerStep = new MyTimer(60 * 1000, 1000);
+        timerStep.start();
+
     }
 
     public void initDB() {
@@ -59,11 +88,14 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void nextMove() {
+        timerStep.cancel();
+        timerStep.start();
+
         team_move_i = (team_move_i + 1) % teams.length;
 
-        FragmentManager fragmentManager = getFragmentManager();
-        GameInfoFragment fragment = (GameInfoFragment) fragmentManager.findFragmentById(R.id.game_info);
-        fragment.setCurrentTeam(teams[team_move_i]);
+        // FragmentManager fragmentManager = getFragmentManager();
+        // GameInfoFragment fragment = (GameInfoFragment) fragmentManager.findFragmentById(R.id.game_info);
+        // fragment.setCurrentTeam(teams[team_move_i]);
 
 
     }
