@@ -2,11 +2,7 @@ package ru.pyply.games.points.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
-
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -17,10 +13,10 @@ import android.widget.Toast;
 import ru.pyply.games.points.R;
 import ru.pyply.games.points.db.DBGames;
 import ru.pyply.games.points.fragments.GameInfoFragment;
+import ru.pyply.games.points.geometry.Point;
 import ru.pyply.games.points.models.Camp;
 import ru.pyply.games.points.models.MePlayer;
 import ru.pyply.games.points.models.Player;
-import ru.pyply.games.points.models.Point;
 import ru.pyply.games.points.models.Team;
 import ru.pyply.games.points.models.Wall;
 
@@ -75,15 +71,21 @@ public class GameActivity extends AppCompatActivity {
 
         MePlayer me_player = new MePlayer("Permyak_Logy");
         Team team_pyply = new Team(new Player[]{me_player}, getResources().getColor(R.color.pyply_team), "PyPLy");
-        Team team_nicktozz = new Team(new Player[]{new Player("NicktoZz")}, getResources().getColor(R.color.teal_200), "Immortal");
+        // Team team_nicktozz = new Team(new Player[]{new Player("NicktoZz")}, getResources().getColor(R.color.teal_200), "Immortal");
 
 
-        teams = new Team[]{team_pyply, team_nicktozz};
+        teams = new Team[]{team_pyply};
         team_move_i = teams.length - 1;
 
-        new Wall(me_player.createCamp(new Point(0, 0)), me_player.createCamp(new Point(0, 1)));
-        new Wall(me_player.createCamp(new Point(2, 2)), me_player.createCamp(new Point(-3, -5)));
+        team_pyply.createCamp(new Point(3, 5));
+        team_pyply.createCamp(new Point(4, 5));
+        team_pyply.createCamp(new Point(5, 4));
+        team_pyply.createCamp(new Point(6, 5));
+        team_pyply.createCamp(new Point(6, 6));
+        team_pyply.createCamp(new Point(5, 7));
+        team_pyply.createCamp(new Point(4, 7));
 
+        team_pyply.createCamp(new Point(3, 6));
         nextMove();
     }
 

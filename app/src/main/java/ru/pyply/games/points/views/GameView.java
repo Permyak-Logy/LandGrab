@@ -1,8 +1,6 @@
 package ru.pyply.games.points.views;
 
 import android.annotation.SuppressLint;
-import android.app.ActivityManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -16,15 +14,9 @@ import android.view.SurfaceView;
 
 import androidx.annotation.NonNull;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-
 import ru.pyply.games.points.activities.GameActivity;
 import ru.pyply.games.points.models.Camp;
-import ru.pyply.games.points.models.Point;
-import ru.pyply.games.points.models.Team;
+import ru.pyply.games.points.geometry.Point;
 import ru.pyply.games.points.models.Wall;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {

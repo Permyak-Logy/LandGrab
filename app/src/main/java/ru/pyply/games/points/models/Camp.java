@@ -2,11 +2,11 @@ package ru.pyply.games.points.models;
 
 import android.graphics.Canvas;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import ru.pyply.games.points.geometry.Point;
 import ru.pyply.games.points.views.GameView;
 
 public class Camp implements DrawGameObj {

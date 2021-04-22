@@ -2,6 +2,8 @@ package ru.pyply.games.points.models;
 
 import android.media.Image;
 
+import ru.pyply.games.points.geometry.Point;
+
 public class MePlayer extends Player {
     public MePlayer(String name) {
         super(name);

@@ -6,6 +6,7 @@ import android.util.Log;
 import java.util.ArrayList;
 
 import ru.pyply.games.points.R;
+import ru.pyply.games.points.geometry.Point;
 
 
 public class Team {

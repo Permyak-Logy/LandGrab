@@ -1,4 +1,4 @@
-package ru.pyply.games.points.models;
+package ru.pyply.games.points.geometry;
 
 public class DoublePoint {
     public final Point point_a;
