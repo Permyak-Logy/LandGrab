@@ -13,6 +13,7 @@ public class Team {
     public ArrayList<Player> players;
     public Paint paintPoints;
     public Paint paintLines;
+    public Paint paintLand;
 
     private String name;
 
@@ -25,10 +26,16 @@ public class Team {
 
     public Team(Player[] players_, int color) {
         players = new ArrayList<>();
+
         paintPoints = new Paint();
         paintPoints.setColor(color);
+
         paintLines = new Paint();
         paintLines.setColor(color);
+
+        paintLand = new Paint();
+        paintLand.setColor(color);
+        paintLand.setAlpha(100);
 
         name = R.string.team + " " + count_teams++;
 

@@ -12,6 +12,7 @@ import ru.pyply.games.points.views.GameView;
 public class Camp implements DrawGameObj {
     public Team team;
     public Point point;
+    public Team captured;
     public static final int RADIUS = 20;
 
     public static final Map<Point, Camp> map_camps = Collections.synchronizedMap(new HashMap<>());
@@ -21,11 +22,12 @@ public class Camp implements DrawGameObj {
 
         this.team = team;
         this.point = point;
+        this.captured = null;
 
         synchronized (map_camps) {
             map_camps.put(point, this);
         }
-        Wall.autoCreator(point);
+        Wall.autoCreator(this);
     }
 
     @SuppressWarnings("NullableProblems")

@@ -57,7 +57,6 @@ public class Polygon {
 
             }
         }
-        System.out.println("Граница " + a + " Входит " + b);
         return a / 2. + b - 1;
     }
 

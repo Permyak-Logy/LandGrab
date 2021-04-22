@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import ru.pyply.games.points.activities.GameActivity;
 import ru.pyply.games.points.models.Camp;
 import ru.pyply.games.points.geometry.Point;
+import ru.pyply.games.points.models.Land;
 import ru.pyply.games.points.models.Wall;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
@@ -73,7 +74,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 }
             }
 
-            System.out.printf("double click %s %s %s\n", r, x, y);
             return true;
         }
     }
@@ -146,6 +146,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                         drawSheet(canvas);
                         drawPoints(canvas);
                         drawWalls(canvas);
+                        drawLands(canvas);
 
                         //noinspection BusyWait
                         Thread.sleep(1);
@@ -187,10 +188,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             }
         }
 
-        @SuppressWarnings({"unused", "RedundantSuppression"})
         public void drawWalls(Canvas canvas) {
-            synchronized (Wall.walls_map) {
-                Wall[] walls = Wall.walls_map.values().toArray(new Wall[0]);
+            synchronized (Wall.map_walls) {
+                Wall[] walls = Wall.map_walls.values().toArray(new Wall[0]);
                 for (Wall wall : walls) {
                     if (wall.isVisibleOnSheet(canvas, camera_x, camera_y, zoom)) {
                         wall.draw(canvas, camera_x, camera_y, zoom);
@@ -199,9 +199,15 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             }
         }
 
-        @SuppressWarnings({"unused", "RedundantSuppression"})
         public void drawLands(Canvas canvas) {
-
+            synchronized (Land.list_lands) {
+                Land[] lands = Land.list_lands.toArray(new Land[0]);
+                for (Land land : lands) {
+                    if (land.isVisibleOnSheet(canvas, camera_x, camera_y, zoom)) {
+                        land.draw(canvas, camera_x, camera_y, zoom);
+                    }
+                }
+            }
         }
 
         public static Point getLeftTopPointOnSheet(float camera_x, float camera_y, float zoom) {

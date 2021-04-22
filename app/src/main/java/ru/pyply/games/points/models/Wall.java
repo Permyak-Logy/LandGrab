@@ -2,7 +2,6 @@ package ru.pyply.games.points.models;
 
 import android.graphics.Canvas;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,15 +49,15 @@ public class Wall implements DrawGameObj {
     public Camp camp_a;
     public Camp camp_b;
 
-    public static final Map<DoublePoint, Wall> walls_map = Collections.synchronizedMap(new HashMap<>());
+    public static final Map<DoublePoint, Wall> map_walls = Collections.synchronizedMap(new HashMap<>());
 
     public Wall(Camp camp_a, Camp camp_b) {
         this.camp_a = camp_a;
         this.camp_b = camp_b;
 
-        synchronized (walls_map) {
-            walls_map.put(new DoublePoint(camp_a.point, camp_b.point), this);
-            walls_map.put(new DoublePoint(camp_b.point, camp_a.point), this);
+        synchronized (map_walls) {
+            map_walls.put(new DoublePoint(camp_a.point, camp_b.point), this);
+            map_walls.put(new DoublePoint(camp_b.point, camp_a.point), this);
         }
     }
 
@@ -80,16 +79,14 @@ public class Wall implements DrawGameObj {
         return camp_a.isVisibleOnSheet(canvas, cam_x, cam_y, zoom) || camp_b.isVisibleOnSheet(canvas, cam_x, cam_y, zoom);
     }
 
-    public static void autoCreator(Point point) {
+    public static void autoCreator(Camp camp) {
 
         Stack<ElemChain> campStack = new Stack<>(); // Линия сборки территории
-        Camp camp = Camp.map_camps.get(point);
         campStack.add(new ElemChain(camp));
 
         // Пытемся создать самую большую територию
-        Polygon max_land = null;
+        Polygon max_polygon = null;
         double max_square = 0;
-
         while (!campStack.isEmpty()) {
             if (campStack.size() > 1)
                 campStack.pop();
@@ -100,41 +97,47 @@ public class Wall implements DrawGameObj {
                     polygon.addPoint(campStack.get(i).camp.point);
                 }
                 double square = polygon.getSquare();
-                System.out.println(square + " " + polygon.getPoint(0) + " " + polygon.getPoint(1) + polygon.getPoint(polygon.countPoints() - 1));
                 if (max_square < square) {
-                    max_land = polygon;
+                    max_polygon = polygon;
                     max_square = square;
                 }
             }
         }
+        if (max_polygon == null)
+            return;
 
-        //noinspection ConstantConditions
-        System.out.println("Образовалась территория? " + max_land != null);
-        if (max_land != null) {
-            for (int i = 0; i < max_land.countPoints(); i++) {
-                Camp a = Camp.map_camps.get(max_land.getPoint(i));
-                Camp b = Camp.map_camps.get(max_land.getPoint(i == max_land.countPoints() - 1 ? 0 : i + 1));
-                assert a != null && b != null;
-                if (walls_map.get(new DoublePoint(a.point, b.point)) == null)
-                    new Wall(a, b);
+        // Проверяем на захват хотя бы 1 врага
+        boolean any_grab = false;
+        synchronized (Camp.map_camps) {
+            Camp[] camps = Camp.map_camps.values().toArray(new Camp[0]);
+
+            for (Camp enemy_camp : camps) {
+                if (enemy_camp.team != camp.team) {
+                    boolean captured = max_polygon.contains(enemy_camp.point);
+                    if (captured) {
+                        any_grab = true;
+                        enemy_camp.captured = camp.team;
+                    }
+                }
             }
         }
 
+        // Создаём стены
+        if (any_grab) {
+            for (int i = 0; i < max_polygon.countPoints(); i++) {
+                Camp a = Camp.map_camps.get(max_polygon.getPoint(i));
+                Camp b = Camp.map_camps.get(max_polygon.getPoint(i == max_polygon.countPoints() - 1 ? 0 : i + 1));
+                assert a != null && b != null;
+                if (map_walls.get(new DoublePoint(a.point, b.point)) == null)
+                    new Wall(a, b);
+            }
 
-        /*
-        for (int[] dir : dirs) {
-            Camp other = Camp.map_camps.get(new Point(point.x + dir[0], point.y + dir[1]));
-            if (camp != null && other != null)
-                if (camp.team == other.team)
-                    if (walls_map.get(new DoublePoint(camp.point, other.point)) == null)
-                        new Wall(camp, other);
-
-
+            new Land(camp.team, max_polygon);
         }
-        */
     }
 
     protected static void try_fill_chain(Stack<ElemChain> campStack) {
+        // TODO: Убрать включение старых территорий
         boolean isClosed = false;
 
         // Пробуем собрать цепь
@@ -151,7 +154,7 @@ public class Wall implements DrawGameObj {
                             new Point(cur_elem.camp.point.x + x,
                                     cur_elem.camp.point.y + y)
                     );
-                    if (new_camp != null && new_camp.team == campStack.peek().camp.team) {
+                    if (new_camp != null && new_camp.team == campStack.peek().camp.team && new_camp.captured == null) {
                         ElemChain new_elem = new ElemChain(new_camp);
                         boolean isFirst = campStack.firstElement().camp == new_camp;
 
