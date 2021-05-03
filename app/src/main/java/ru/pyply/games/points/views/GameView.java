@@ -41,6 +41,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         @Override
         public boolean onDoubleTap(MotionEvent e) {
+            if (!((GameActivity) this.view.getContext()).running) return true;
+
             DrawThread dt = view.getDrawThread();
             float x = DrawThread.getPointXOnSheet(e.getX(), dt.camera_x, dt.zoom);
             boolean val_x = true;

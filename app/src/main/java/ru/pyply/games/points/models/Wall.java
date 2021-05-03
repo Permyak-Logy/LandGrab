@@ -112,7 +112,7 @@ public class Wall implements DrawGameObj {
             Camp[] camps = Camp.map_camps.values().toArray(new Camp[0]);
 
             for (Camp enemy_camp : camps) {
-                if (enemy_camp.team != camp.team) {
+                if (enemy_camp.team != camp.team && enemy_camp.captured == null) {
                     boolean captured = max_polygon.contains(enemy_camp.point);
                     if (captured) {
                         any_grab = true;

@@ -54,6 +54,8 @@ public class GameActivity extends AppCompatActivity {
     DBGames DBConnector;
     Context mContext;
     MyTimer timerStep;
+    int target_camps;
+    public boolean running;
 
     public Team[] teams;
     public int team_move_i = 0;
@@ -66,8 +68,9 @@ public class GameActivity extends AppCompatActivity {
         prepareData();
         initDB();
 
+        target_camps = 5;
+
         timerStep = new MyTimer(60 * 1000, 499, this);
-        timerStep.start();
 
         MePlayer me_player = new MePlayer("Permyak_Logy");
         Team team_pyply = new Team(new Player[]{me_player}, getResources().getColor(R.color.pyply_team), "PyPLy");
@@ -75,8 +78,9 @@ public class GameActivity extends AppCompatActivity {
 
 
         teams = new Team[]{team_pyply, team_nicktozz};
-        team_move_i = teams.length - 1;
-        nextMove();
+        team_move_i = 0;
+
+        this.startGame();
     }
 
     @Override
@@ -94,12 +98,60 @@ public class GameActivity extends AppCompatActivity {
         Camp.map_camps.clear();
         Wall.map_walls.clear();
         Land.list_lands.clear();
+
+    }
+
+    public Team checkOnFinishGame() {
+        long max_captured = 0;
+        Team team_win = null;
+        synchronized (Camp.map_camps) {
+            Camp[] camps = Camp.map_camps.values().toArray(new Camp[0]);
+            for (Team team : teams) {
+                long captured = 0;
+                for (Camp camp : camps) {
+                    if (camp.captured == team) {
+                        captured++;
+                    }
+                }
+                if (captured > max_captured) {
+                    max_captured = captured;
+                    team_win = team;
+                }
+            }
+        }
+        if (max_captured >= target_camps) {
+            return team_win;
+        }
+        return null;
+    }
+
+    public void startGame() {
+        timerStep.cancel();
+        timerStep.start();
+        running = true;
+    }
+
+    public void showWinner(Team team) {
+        Toast.makeText(
+                this,
+                String.format("Победила команда %s во главе с %s",
+                        team.getName(), team.players.get(0).name), Toast.LENGTH_LONG).show();
+    }
+
+    public void stopGame() {
+        timerStep.cancel();
+        running = false;
     }
 
     public void nextMove() {
-        // Перезапуск таймера
         timerStep.cancel();
-        timerStep.start();
+
+        Team team_win = checkOnFinishGame();
+        if (team_win != null) {
+            showWinner(team_win);
+            stopGame();
+            return;
+        }
 
         // Смена хода
         team_move_i = (team_move_i + 1) % teams.length;
@@ -110,6 +162,7 @@ public class GameActivity extends AppCompatActivity {
         assert gameInfoFragment != null;
         gameInfoFragment.setCurrentTeam(teams[team_move_i]);
 
+        timerStep.start();
 
     }
 }
