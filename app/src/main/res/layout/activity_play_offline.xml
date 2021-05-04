@@ -52,27 +52,10 @@
         android:text="@string/players"
         android:textSize="24sp" />
 
-    <LinearLayout
+    <ListView
         android:id="@+id/players_list"
         android:layout_width="350dp"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:clipToPadding="false"
-        android:gravity="center|top"
-        android:orientation="vertical">
-
-        <fragment
-            android:id="@+id/fragment4"
-            android:name="ru.pyply.games.points.fragments.PlayerOfflineFragment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:layout="@layout/fragment_player_offline" />
-
-        <fragment
-            android:id="@+id/fragment5"
-            android:name="ru.pyply.games.points.fragments.PlayerOfflineFragment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:layout="@layout/fragment_player_offline" />
-    </LinearLayout>
+        android:clipToPadding="false" />
 </LinearLayout>

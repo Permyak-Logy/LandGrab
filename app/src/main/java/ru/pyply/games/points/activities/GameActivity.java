@@ -8,6 +8,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import ru.pyply.games.points.R;
@@ -19,6 +21,7 @@ import ru.pyply.games.points.models.MePlayer;
 import ru.pyply.games.points.models.Player;
 import ru.pyply.games.points.models.Team;
 import ru.pyply.games.points.models.Wall;
+import ru.pyply.games.points.views.PlayerAdapter;
 
 
 public class GameActivity extends AppCompatActivity {
@@ -64,22 +67,19 @@ public class GameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+        FragmentManager fm = getSupportFragmentManager();
+        Button btn = (Button) fm.findFragmentById(R.id.game_info).getView().findViewById(R.id.button_exit);
+        btn.setOnClickListener(v -> finish());
 
         prepareData();
         initDB();
+        prepareTeams((PlayerAdapter.Player[]) getIntent().getExtras().getSerializable(PlayOfflineActivity.EXTRA_TEAMS));
 
         target_camps = 5;
 
         timerStep = new MyTimer(60 * 1000, 499, this);
 
-        MePlayer me_player = new MePlayer("Permyak_Logy");
-        Team team_pyply = new Team(new Player[]{me_player}, getResources().getColor(R.color.pyply_team), "PyPLy");
-        Team team_nicktozz = new Team(new Player[]{new Player("NicktoZz")}, getResources().getColor(R.color.teal_200), "Immortal");
-
-
-        teams = new Team[]{team_pyply, team_nicktozz};
-        team_move_i = 0;
-
+        updateTeamInfo();
         this.startGame();
     }
 
@@ -99,6 +99,13 @@ public class GameActivity extends AppCompatActivity {
         Wall.map_walls.clear();
         Land.list_lands.clear();
 
+    }
+
+    public void prepareTeams(PlayerAdapter.Player[] players) {
+        teams = new Team[players.length];
+        for (int i = 0; i < teams.length; i++) {
+            teams[i] = new Team(new Player[]{new Player(players[i].nickname)}, players[i].color);
+        }
     }
 
     public Team checkOnFinishGame() {
@@ -143,6 +150,13 @@ public class GameActivity extends AppCompatActivity {
         running = false;
     }
 
+    public void updateTeamInfo() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        GameInfoFragment gameInfoFragment = (GameInfoFragment) fragmentManager.findFragmentById(R.id.game_info);
+        assert gameInfoFragment != null;
+        gameInfoFragment.setCurrentTeam(teams[team_move_i]);
+    }
+
     public void nextMove() {
         timerStep.cancel();
 
@@ -157,12 +171,8 @@ public class GameActivity extends AppCompatActivity {
         team_move_i = (team_move_i + 1) % teams.length;
 
         // Показываем на gameInfo
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        GameInfoFragment gameInfoFragment = (GameInfoFragment) fragmentManager.findFragmentById(R.id.game_info);
-        assert gameInfoFragment != null;
-        gameInfoFragment.setCurrentTeam(teams[team_move_i]);
+        updateTeamInfo();
 
         timerStep.start();
-
     }
 }

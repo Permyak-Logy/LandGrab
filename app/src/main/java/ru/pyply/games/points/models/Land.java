@@ -2,6 +2,7 @@ package ru.pyply.games.points.models;
 
 import android.graphics.Canvas;
 import android.graphics.Path;
+import android.view.View;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,10 +25,6 @@ public class Land implements DrawGameObj {
         synchronized (list_lands) {
             list_lands.add(this);
         }
-    }
-
-    public boolean collidePoint(Point point) {
-        return polygon.contains(point);
     }
 
     @Override

@@ -1,8 +1,10 @@
 package ru.pyply.games.points.models;
 
+import android.content.res.Resources;
 import android.graphics.Paint;
 import android.util.Log;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import ru.pyply.games.points.R;
@@ -37,7 +39,7 @@ public class Team {
         paintLand.setColor(color);
         paintLand.setAlpha(100);
 
-        name = R.string.team + " " + count_teams++;
+        name = "Команда " + ++count_teams;
 
         for (Player player : players_) {
             joinPlayer(player);

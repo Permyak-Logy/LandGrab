@@ -125,8 +125,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         {
             // По умолчанию
-            background.setColor(Color.WHITE);
-            default_sheet_lines.setColor(Color.LTGRAY);
+            background.setColor(Color.BLACK);
+            default_sheet_lines.setColor(Color.WHITE);
         }
 
 

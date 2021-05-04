@@ -5,7 +5,6 @@ import android.media.Image;
 public class Player {
     // TODO: Сделать генерируемым id
     protected long id = 0;
-    public Image icon;
     public String name;
     public boolean head_room;
     public Team team;
