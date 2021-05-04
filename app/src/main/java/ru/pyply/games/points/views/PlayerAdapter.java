@@ -20,9 +20,18 @@ public class PlayerAdapter extends ArrayAdapter<PlayerAdapter.Player> {
             Color.YELLOW, Color.CYAN, Color.MAGENTA};
 
     public static class Player implements Serializable {
+        private String[] nicks = {"Вася", "Петя", "Шнюк", "Лунтик", "Сапёр", "Ноидор", "Синед",
+                "Ятеп", "Ясав", "Анкл", "Пидав", "Шлякер", "Коря", "ХХХ", "Пятка", "Утка", "Дед",
+                "Оброей", "Йеахю", "Линдер", "Мзесо", "Депутат"};
+
         public String nickname = "";
         int color_i = 0;
         public int color = colors[color_i];
+
+        public String setRandNick() {
+            nickname = nicks[(int) (Math.random() * 1000) % nicks.length];
+            return nickname;
+        }
     }
 
     public PlayerAdapter(Context context, Player[] arr) {
@@ -46,7 +55,6 @@ public class PlayerAdapter extends ArrayAdapter<PlayerAdapter.Player> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.adapter_player, null);
         }
 
-        // Заполняем адаптер
         EditText editText = (EditText) convertView.findViewById(R.id.player_name);
         editText.setText(player.nickname);
         editText.addTextChangedListener(new TextWatcher() {
@@ -68,6 +76,9 @@ public class PlayerAdapter extends ArrayAdapter<PlayerAdapter.Player> {
             player.color = colors[(++player.color_i) % colors.length];
             v.setBackgroundColor(player.color);
         });
+
+        Button rand_nickname = (Button) convertView.findViewById(R.id.rand_nickname);
+        rand_nickname.setOnClickListener(v -> editText.setText(player.setRandNick()));
 
         return convertView;
     }

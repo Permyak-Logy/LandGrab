@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -56,7 +57,7 @@ public class GameActivity extends AppCompatActivity {
 
     DBGames DBConnector;
     Context mContext;
-    MyTimer timerStep;
+    MyTimer timerStep = null;
     int target_camps;
     public boolean running;
 
@@ -73,11 +74,15 @@ public class GameActivity extends AppCompatActivity {
 
         prepareData();
         initDB();
-        prepareTeams((PlayerAdapter.Player[]) getIntent().getExtras().getSerializable(PlayOfflineActivity.EXTRA_TEAMS));
+        Intent i = getIntent();
+        prepareTeams((PlayerAdapter.Player[]) i.getSerializableExtra(PlayOfflineActivity.EXTRA_TEAMS));
 
-        target_camps = 5;
+        target_camps = i.getIntExtra(PlayOfflineActivity.TARGET_CAMPS_EXTRA, 5);
 
-        timerStep = new MyTimer(60 * 1000, 499, this);
+        int seconds_for_moving = i.getIntExtra(PlayOfflineActivity.SECONDS_FOR_MOVE_EXTRA, 0);
+        if (seconds_for_moving != 0) {
+            timerStep = new MyTimer(seconds_for_moving * 1000, 499, this);
+        }
 
         updateTeamInfo();
         this.startGame();
@@ -133,8 +138,10 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void startGame() {
-        timerStep.cancel();
-        timerStep.start();
+        if (timerStep != null) {
+            timerStep.cancel();
+            timerStep.start();
+        }
         running = true;
     }
 
@@ -146,7 +153,9 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void stopGame() {
-        timerStep.cancel();
+        if (timerStep != null) {
+            timerStep.cancel();
+        }
         running = false;
     }
 
@@ -158,8 +167,9 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void nextMove() {
-        timerStep.cancel();
-
+        if (timerStep != null) {
+            timerStep.cancel();
+        }
         Team team_win = checkOnFinishGame();
         if (team_win != null) {
             showWinner(team_win);
@@ -173,6 +183,8 @@ public class GameActivity extends AppCompatActivity {
         // Показываем на gameInfo
         updateTeamInfo();
 
-        timerStep.start();
+        if (timerStep != null) {
+            timerStep.start();
+        }
     }
 }

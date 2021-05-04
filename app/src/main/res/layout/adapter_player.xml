@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <Button
-        android:id="@+id/remove_player"
+        android:id="@+id/rand_nickname"
         android:layout_width="50dp"
         android:layout_height="match_parent"
         android:text="@string/minus" />

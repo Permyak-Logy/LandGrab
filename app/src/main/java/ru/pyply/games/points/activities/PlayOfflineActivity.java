@@ -1,18 +1,14 @@
 package ru.pyply.games.points.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-
-import android.os.Parcelable;
 import android.view.View;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import java.io.Serializable;
-import java.util.ArrayList;
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.util.HashSet;
 
 import ru.pyply.games.points.R;
@@ -20,6 +16,13 @@ import ru.pyply.games.points.views.PlayerAdapter;
 
 public class PlayOfflineActivity extends AppCompatActivity {
     public static final String EXTRA_TEAMS = "EXTRA_TEAMS";
+    public static final String COUNT_PLAYERS_EXTRA = "count_player_extra";
+    public static final String SECONDS_FOR_MOVE_EXTRA = "seconds_for_move_extra";
+    public static final String TARGET_CAMPS_EXTRA = "target_camps_extra";
+
+    int target_camps = 1;
+    int count_players = 2;
+    int seconds_for_move = 0;
 
     PlayerAdapter.Player[] players;
 
@@ -27,20 +30,24 @@ public class PlayOfflineActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_offline);
-
-        players = PlayerAdapter.makePlayers((byte) 2);
-        PlayerAdapter adapter = new PlayerAdapter(this, players);
-        ListView lv = (ListView) findViewById(R.id.players_list);
-        lv.setAdapter((ListAdapter) adapter);
+        resetPlayers();
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (resultCode) {
-            case RESULT_OK:
-                // tv.setText(data.getStringExtra("co"));
-                break;
+        if (resultCode == RESULT_OK) {
+            target_camps = data.getIntExtra(TARGET_CAMPS_EXTRA, 10);
+            count_players = data.getIntExtra(COUNT_PLAYERS_EXTRA, 2);
+            seconds_for_move = data.getIntExtra(SECONDS_FOR_MOVE_EXTRA, 0);
+            resetPlayers();
         }
+    }
+
+    public void resetPlayers() {
+        players = PlayerAdapter.makePlayers((byte) count_players);
+        PlayerAdapter adapter = new PlayerAdapter(this, players);
+        ListView lv = (ListView) findViewById(R.id.players_list);
+        lv.setAdapter((ListAdapter) adapter);
     }
 
     public void startOfflineGame(View view) {
@@ -59,11 +66,16 @@ public class PlayOfflineActivity extends AppCompatActivity {
         }
         Intent i = new Intent(PlayOfflineActivity.this, GameActivity.class);
         i.putExtra(EXTRA_TEAMS, players);
+        i.putExtra(TARGET_CAMPS_EXTRA, target_camps);
+        i.putExtra(SECONDS_FOR_MOVE_EXTRA, seconds_for_move);
         startActivity(i);
     }
 
     public void showSettingsOffline(View view) {
         Intent i = new Intent(PlayOfflineActivity.this, SettingsGameActivity.class);
+        i.putExtra(TARGET_CAMPS_EXTRA, target_camps);
+        i.putExtra(COUNT_PLAYERS_EXTRA, count_players);
+        i.putExtra(SECONDS_FOR_MOVE_EXTRA, seconds_for_move);
         startActivityForResult(i, 0);
     }
 }
