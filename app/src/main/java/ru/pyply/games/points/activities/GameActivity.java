@@ -98,7 +98,7 @@ public class GameActivity extends AppCompatActivity {
         Camp.map_camps.clear();
         Wall.map_walls.clear();
         Land.list_lands.clear();
-
+        Team.count_teams = 0;
     }
 
     public void prepareTeams(PlayerAdapter.Player[] players) {

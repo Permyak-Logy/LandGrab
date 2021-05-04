@@ -22,6 +22,7 @@ public class PlayOfflineActivity extends AppCompatActivity {
     public static final String EXTRA_TEAMS = "EXTRA_TEAMS";
 
     PlayerAdapter.Player[] players;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,10 +34,19 @@ public class PlayOfflineActivity extends AppCompatActivity {
         lv.setAdapter((ListAdapter) adapter);
     }
 
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (resultCode) {
+            case RESULT_OK:
+                // tv.setText(data.getStringExtra("co"));
+                break;
+        }
+    }
+
     public void startOfflineGame(View view) {
 
         HashSet<Integer> colors = new HashSet<>();
-        for (PlayerAdapter.Player player: players) {
+        for (PlayerAdapter.Player player : players) {
             if (player.nickname.equals("")) {
                 Toast.makeText(getApplicationContext(), "Заполнены не все имена игроков", Toast.LENGTH_LONG).show();
                 return;

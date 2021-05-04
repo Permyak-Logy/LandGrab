@@ -28,4 +28,8 @@
     <string name="save_and_exit">Сохранить и выйти</string>
     <string name="team">Команда</string>
     <string name="time_is_up">Время хода кончилось!</string>
+    <string name="count_camps">Количество точек</string>
+    <string name="target_captured">Целевой захват</string>
+    <string name="limit_time">Ограничить время на ход</string>
+    <string name="time_for_step">Время на ход</string>
 </resources>
