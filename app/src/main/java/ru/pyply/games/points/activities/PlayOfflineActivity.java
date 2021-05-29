@@ -20,9 +20,9 @@ public class PlayOfflineActivity extends AppCompatActivity {
     public static final String SECONDS_FOR_MOVE_EXTRA = "seconds_for_move_extra";
     public static final String TARGET_CAMPS_EXTRA = "target_camps_extra";
 
-    int target_camps = 1;
+    int target_camps = 10;
     int count_players = 2;
-    int seconds_for_move = 0;
+    int seconds_for_move = 60;
 
     PlayerAdapter.Player[] players;
 
@@ -46,8 +46,8 @@ public class PlayOfflineActivity extends AppCompatActivity {
     public void resetPlayers() {
         players = PlayerAdapter.makePlayers((byte) count_players);
         PlayerAdapter adapter = new PlayerAdapter(this, players);
-        ListView lv = (ListView) findViewById(R.id.players_list);
-        lv.setAdapter((ListAdapter) adapter);
+        ListView lv = findViewById(R.id.players_list);
+        lv.setAdapter(adapter);
     }
 
     public void startOfflineGame(View view) {
