@@ -5,8 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 
 import ru.pyply.games.points.R;
+import ru.pyply.games.points.db.DBGames;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -14,6 +16,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        Button btn = findViewById(R.id.show_statistic_btn);
+
+        DBGames dbGames = new DBGames(this);
+        btn.setEnabled(dbGames.selectAllPlayers().size() != 0);
     }
 
     public void playOffline(View view) {
@@ -26,8 +38,8 @@ public class MainActivity extends AppCompatActivity {
         startActivity(i);
     }
 
-    public void showAccount(View view) {
-        Intent i = new Intent(MainActivity.this, AccountActivity.class);
+    public void showStatistic(View view) {
+        Intent i = new Intent(MainActivity.this, StatisticActivity.class);
         startActivity(i);
     }
 }

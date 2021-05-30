@@ -15,7 +15,7 @@ import java.io.Serializable;
 
 import ru.pyply.games.points.R;
 
-public class PlayerAdapter extends ArrayAdapter<PlayerAdapter.Player> {
+public class PlayerListAdapter extends ArrayAdapter<PlayerListAdapter.Player> {
     static final int[] colors = {Color.RED, Color.BLUE, Color.GREEN, Color.GRAY, Color.WHITE,
             Color.YELLOW, Color.CYAN, Color.MAGENTA};
 
@@ -34,14 +34,14 @@ public class PlayerAdapter extends ArrayAdapter<PlayerAdapter.Player> {
         }
     }
 
-    public PlayerAdapter(Context context, Player[] arr) {
+    public PlayerListAdapter(Context context, Player[] arr) {
         super(context, R.layout.adapter_player, arr);
     }
 
     public static Player[] makePlayers(byte count) {
-        PlayerAdapter.Player[] players = new PlayerAdapter.Player[count];
+        PlayerListAdapter.Player[] players = new PlayerListAdapter.Player[count];
         for (int i = 0; i < players.length; i++) {
-            players[i] = new PlayerAdapter.Player();
+            players[i] = new PlayerListAdapter.Player();
         }
         return players;
     }

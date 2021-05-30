@@ -13,7 +13,7 @@
         <activity android:name="ru.pyply.games.points.activities.SettingsGameActivity" />
         <activity android:name="ru.pyply.games.points.activities.PlayOfflineActivity" />
         <activity android:name="ru.pyply.games.points.activities.PlayOnlineActivity" />
-        <activity android:name="ru.pyply.games.points.activities.AccountActivity" />
+        <activity android:name="ru.pyply.games.points.activities.StatisticActivity" />
         <activity android:name="ru.pyply.games.points.activities.GameActivity" /><!-- TODO: Убрать Title Bar -->
         <activity android:name="ru.pyply.games.points.activities.MainActivity">
             <intent-filter>

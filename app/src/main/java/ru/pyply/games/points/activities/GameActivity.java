@@ -17,14 +17,14 @@ import ru.pyply.games.points.R;
 import ru.pyply.games.points.db.DBGames;
 import ru.pyply.games.points.db.Game;
 import ru.pyply.games.points.db.Result;
-import ru.pyply.games.points.db.Results;
+import ru.pyply.games.points.db.ResultType;
 import ru.pyply.games.points.fragments.GameInfoFragment;
 import ru.pyply.games.points.models.Camp;
 import ru.pyply.games.points.models.Land;
 import ru.pyply.games.points.models.Player;
 import ru.pyply.games.points.models.Team;
 import ru.pyply.games.points.models.Wall;
-import ru.pyply.games.points.views.PlayerAdapter;
+import ru.pyply.games.points.views.PlayerListAdapter;
 
 
 public class GameActivity extends AppCompatActivity {
@@ -115,7 +115,7 @@ public class GameActivity extends AppCompatActivity {
 
         Intent i = getIntent();
         prepareData();
-        prepareTeams((PlayerAdapter.Player[]) i.getSerializableExtra(PlayOfflineActivity.EXTRA_TEAMS));
+        prepareTeams((PlayerListAdapter.Player[]) i.getSerializableExtra(PlayOfflineActivity.EXTRA_TEAMS));
 
         target_camps = i.getIntExtra(PlayOfflineActivity.TARGET_CAMPS_EXTRA, 5);
 
@@ -149,7 +149,7 @@ public class GameActivity extends AppCompatActivity {
         statsPlayers = new HashMap<>();
     }
 
-    public void prepareTeams(PlayerAdapter.Player[] players) {
+    public void prepareTeams(PlayerListAdapter.Player[] players) {
         teams = new Team[players.length];
         for (int i = 0; i < teams.length; i++) {
             teams[i] = new Team(new Player[]{new Player(players[i].nickname)}, players[i].color);
@@ -206,7 +206,6 @@ public class GameActivity extends AppCompatActivity {
                         team.getName(), team.players.get(0).name), Toast.LENGTH_LONG).show();
     }
 
-
     public void writeResultsToDB(Team winner) {
         DBGames database = initDB();
 
@@ -227,7 +226,7 @@ public class GameActivity extends AppCompatActivity {
                 assert dataMoves != null;
                 database.insertResult(new Result(
                         database.selectPlayer(player.name).id,
-                        game.id, winner.hasPlayer(player) ? Results.VICTORY : Results.DEFEAT,
+                        game.id, winner.hasPlayer(player) ? ResultType.VICTORY : ResultType.DEFEAT,
                         campsData[0], campsData[1], campsData[2], dataMoves.moves, dataMoves.total_time_moves));
         }}
     }

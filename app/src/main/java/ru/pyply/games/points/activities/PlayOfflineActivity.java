@@ -3,7 +3,6 @@ package ru.pyply.games.points.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -12,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.HashSet;
 
 import ru.pyply.games.points.R;
-import ru.pyply.games.points.views.PlayerAdapter;
+import ru.pyply.games.points.views.PlayerListAdapter;
 
 public class PlayOfflineActivity extends AppCompatActivity {
     public static final String EXTRA_TEAMS = "EXTRA_TEAMS";
@@ -24,7 +23,7 @@ public class PlayOfflineActivity extends AppCompatActivity {
     int count_players = 2;
     int seconds_for_move = 60;
 
-    PlayerAdapter.Player[] players;
+    PlayerListAdapter.Player[] players;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +43,8 @@ public class PlayOfflineActivity extends AppCompatActivity {
     }
 
     public void resetPlayers() {
-        players = PlayerAdapter.makePlayers((byte) count_players);
-        PlayerAdapter adapter = new PlayerAdapter(this, players);
+        players = PlayerListAdapter.makePlayers((byte) count_players);
+        PlayerListAdapter adapter = new PlayerListAdapter(this, players);
         ListView lv = findViewById(R.id.players_list);
         lv.setAdapter(adapter);
     }
@@ -53,7 +52,7 @@ public class PlayOfflineActivity extends AppCompatActivity {
     public void startOfflineGame(View view) {
 
         HashSet<Integer> colors = new HashSet<>();
-        for (PlayerAdapter.Player player : players) {
+        for (PlayerListAdapter.Player player : players) {
             if (player.nickname.equals("")) {
                 Toast.makeText(getApplicationContext(), "Заполнены не все имена игроков", Toast.LENGTH_LONG).show();
                 return;

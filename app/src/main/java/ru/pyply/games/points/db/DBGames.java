@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "UnusedReturnValue"})
 @SuppressLint("Recycle")
 public class DBGames {
 
@@ -123,6 +123,36 @@ public class DBGames {
         return new Result(player_id, game_id, result, m_points, captured_points, lost_points, count_moves, total_time_moves);
     }
 
+    public ArrayList<Result> selectAllResultsWithPlayer(int id) {
+        Cursor mCursor = database.query(TABLE_RESULTS, null, RESULTS_COLUMN_PLAYER_ID + " = ?",
+                new String[]{String.valueOf(id)}, null, null, null);
+
+        ArrayList<Result> arr = new ArrayList<>();
+        mCursor.moveToFirst();
+        if (!mCursor.isAfterLast()) {
+            do {
+                int player_id = mCursor.getInt(RESULTS_NUM_COLUMN_PLAYER_ID);
+                int game_id = mCursor.getInt(RESULTS_NUM_COLUMN_GAME_ID);
+                int result = mCursor.getInt(RESULTS_NUM_COLUMN_RESULT);
+                int m_points = mCursor.getInt(RESULTS_NUM_COLUMN_M_POINTS);
+                int captured_points = mCursor.getInt(RESULTS_NUM_COLUMN_CAPTURED_POINTS);
+                int lost_points = mCursor.getInt(RESULTS_NUM_COLUMN_LOST_POINTS);
+                int count_moves = mCursor.getInt(RESULTS_NUM_COLUMN_COUNT_MOVES);
+                long total_time_moves = mCursor.getLong(RESULTS_NUM_COLUMN_TOTAL_TIME_MOVES);
+                arr.add(new Result(player_id, game_id, result, m_points, captured_points, lost_points, count_moves, total_time_moves));
+            } while (mCursor.moveToNext());
+        }
+        return arr;
+    }
+
+    public ArrayList<Result> selectAllResultsWithPlayer(Player player) {
+        return selectAllResultsWithPlayer(player.id);
+    }
+
+    public ArrayList<Result> selectAllResultsWithPlayer(String name) {
+        return selectAllResultsWithPlayer(selectPlayer(name));
+    }
+
     public ArrayList<Result> selectAllResults() {
         Cursor mCursor = database.query(TABLE_RESULTS, null, null, null, null, null, null);
 
@@ -143,6 +173,7 @@ public class DBGames {
         }
         return arr;
     }
+
 
     // Взаимодействие с Players
     public long insertPlayer(String name) {
@@ -185,6 +216,7 @@ public class DBGames {
         }
         return null;
     }
+
     public Player selectPlayer(String name) {
         Cursor mCursor = database.query(TABLE_PlAYERS, null, PLAYERS_COLUMN_NAME + " = ?",
                 new String[]{name}, null, null, null);

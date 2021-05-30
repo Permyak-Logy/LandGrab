@@ -57,15 +57,15 @@ public class SettingsGameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings_game);
         Intent i = getIntent();
         int players = i.getIntExtra(PlayOfflineActivity.COUNT_PLAYERS_EXTRA, 2);
-        int seconds = i.getIntExtra(PlayOfflineActivity.SECONDS_FOR_MOVE_EXTRA, 0);
+        int seconds = i.getIntExtra(PlayOfflineActivity.SECONDS_FOR_MOVE_EXTRA, 0); // TODO: Что то не так
         int target = i.getIntExtra(PlayOfflineActivity.TARGET_CAMPS_EXTRA, 1);
 
-        TextView count_players_view = (TextView) findViewById(R.id.count_players_view);
+        TextView count_players_view = findViewById(R.id.count_players_view);
         count_players_view.setText(String.valueOf(players));
 
-        LinearLayout editor_seconds_for_move = (LinearLayout) findViewById(R.id.editor_seconds_for_move);
+        LinearLayout editor_seconds_for_move = findViewById(R.id.editor_seconds_for_move);
 
-        SeekBar count_players = (SeekBar) findViewById(R.id.count_players);
+        SeekBar count_players = findViewById(R.id.count_players);
         count_players.setProgress(players - 2);
         count_players.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -82,15 +82,15 @@ public class SettingsGameActivity extends AppCompatActivity {
             }
         });
 
-        EditText seconds_for_move = (EditText) findViewById(R.id.seconds_for_move);
+        EditText seconds_for_move = findViewById(R.id.seconds_for_move);
         seconds_for_move.setFilters(new InputFilter[]{new InputFilterMinMax("1", "3600")});
         seconds_for_move.setText(String.valueOf(seconds == 0 ? 60 : seconds));
 
-        SwitchCompat limit_time = (SwitchCompat) findViewById(R.id.switch_limit_time);
-        limit_time.setChecked(seconds == 0);
+        SwitchCompat limit_time = findViewById(R.id.switch_limit_time);
+        limit_time.setChecked(seconds != 0);
         limit_time.setOnCheckedChangeListener((buttonView, isChecked) -> editor_seconds_for_move.setVisibility(isChecked ? View.VISIBLE : View.INVISIBLE));
 
-        EditText target_camps = (EditText) findViewById(R.id.target_camps);
+        EditText target_camps = findViewById(R.id.target_camps);
         target_camps.setFilters(new InputFilter[]{new InputFilterMinMax("1", "1000")});
         target_camps.setText(String.valueOf(target));
     }
