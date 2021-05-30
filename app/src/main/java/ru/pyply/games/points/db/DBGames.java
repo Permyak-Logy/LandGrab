@@ -178,9 +178,22 @@ public class DBGames {
     public Player selectPlayer(int id) {
         Cursor mCursor = database.query(TABLE_PlAYERS, null, PLAYERS_COLUMN_ID + " = ?",
                 new String[]{String.valueOf(id)}, null, null, null);
-
-        String name = mCursor.getString(PLAYERS_NUM_COLUMN_NAME);
-        return new Player(id, name);
+        mCursor.moveToFirst();
+        if (!mCursor.isAfterLast()) {
+            String name = mCursor.getString(PLAYERS_NUM_COLUMN_NAME);
+            return new Player(id, name);
+        }
+        return null;
+    }
+    public Player selectPlayer(String name) {
+        Cursor mCursor = database.query(TABLE_PlAYERS, null, PLAYERS_COLUMN_NAME + " = ?",
+                new String[]{name}, null, null, null);
+        mCursor.moveToFirst();
+        if (!mCursor.isAfterLast()) {
+            int id = mCursor.getInt(PLAYERS_NUM_COLUMN_ID);
+            return new Player(id, name);
+        }
+        return null;
     }
 
     public ArrayList<Player> selectAllPlayers() {

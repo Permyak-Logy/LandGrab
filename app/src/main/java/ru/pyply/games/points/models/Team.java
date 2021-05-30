@@ -86,6 +86,28 @@ public class Team {
         }
     }
 
+    public int[] getCampsData() {
+        synchronized (Camp.map_camps) {
+            Camp[] camps = Camp.map_camps.values().toArray(new Camp[0]);
+            int count = 0;
+            int captured = 0;
+            int lost = 0;
+
+            for (Camp camp : camps) {
+                if (camp.team == this) {
+                    count++;
+                }
+                if (camp.captured == this) {
+                    captured++;
+                }
+                if (camp.team == this && camp.captured != null && camp.captured != this) {
+                    lost++;
+                }
+            }
+            return new int[]{count, captured, lost};
+        }
+    }
+
     public boolean hasPlayer(Player player) {
         return players.contains(player);
     }
