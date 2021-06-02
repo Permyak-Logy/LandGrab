@@ -19,7 +19,6 @@
         android:gravity="center_vertical"
         android:hint="@string/player_name" />
 
-    <!-- TODO: Заменить на цветной квадратик -->
     <Button
         android:id="@+id/player_color"
         android:layout_width="50dp"

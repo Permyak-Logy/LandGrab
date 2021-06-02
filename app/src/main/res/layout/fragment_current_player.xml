@@ -6,9 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".fragments.CurrentPlayerFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <!-- TODO: Add icon for current player -->
-
     <Space
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
