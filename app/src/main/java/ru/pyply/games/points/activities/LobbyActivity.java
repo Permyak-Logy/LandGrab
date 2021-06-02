@@ -23,7 +23,7 @@ public class LobbyActivity extends AppCompatActivity {
 
     public void showSettingsOnline(View view) {
         Intent i = new Intent(LobbyActivity.this, SettingsGameActivity.class);
-        startActivityForResult(i, 0);
+        startActivity(i);
     }
 
     public void leaveLobby(View view) {

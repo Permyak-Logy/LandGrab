@@ -56,10 +56,6 @@ public class Wall implements DrawGameObj {
         this.camp_a = camp_a;
         this.camp_b = camp_b;
 
-        if (BuildConfig.DEBUG && Math.abs(Math.pow(camp_a.point.x - camp_b.point.x, 2) + Math.pow(camp_a.point.y - camp_b.point.y, 2)) > 2) {
-            throw new AssertionError(String.format("Very big long of wall for %s %s", camp_a.point, camp_b.point));
-        }
-
         synchronized (map_walls) {
             map_walls.put(new DoublePoint(camp_a.point, camp_b.point), this);
             map_walls.put(new DoublePoint(camp_b.point, camp_a.point), this);

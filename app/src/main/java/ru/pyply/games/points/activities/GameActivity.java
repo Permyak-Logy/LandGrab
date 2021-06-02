@@ -133,7 +133,7 @@ public class GameActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        timerStep.cancel();
+        if (timerStep != null) timerStep.cancel();
     }
 
     public DBGames initDB() {

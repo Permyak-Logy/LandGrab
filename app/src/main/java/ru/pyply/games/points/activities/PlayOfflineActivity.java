@@ -75,6 +75,7 @@ public class PlayOfflineActivity extends AppCompatActivity {
         i.putExtra(TARGET_CAMPS_EXTRA, target_camps);
         i.putExtra(COUNT_PLAYERS_EXTRA, count_players);
         i.putExtra(SECONDS_FOR_MOVE_EXTRA, seconds_for_move);
+        //noinspection deprecation
         startActivityForResult(i, 0);
     }
 }
